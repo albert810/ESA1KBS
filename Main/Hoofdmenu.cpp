@@ -10,14 +10,14 @@
 #include <MI0283QT9.h>
 #include <DS1307.h>
 #include <wiring_private.h>
-
+#include "Hoofdmenu.h"
 /*declaratie variabelen*/
 
 MI0283QT9 lcd; //I2C (GLCD-Shield or MI0283QT Adapter v2)
 ArduinoNunchuk nunchuk = ArduinoNunchuk();
 
-void setup()
-{
+Hoofdmenu::Hoofdmenu() {
+
 	nunchuk.init();
 	//init display
 	lcd.begin();
@@ -26,9 +26,6 @@ void setup()
 	lcd.fillScreen(RGB(226, 30, 30)); //achtergrond
 
 }
-void loop()
-{
-	nunchuk.update(); //refresh nunchuk parameters
 
-}
+
 

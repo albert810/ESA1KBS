@@ -15,15 +15,11 @@
 
 using namespace std;
 
-MI0283QT9 lcd; //I2C (GLCD-Shield or MI0283QT Adapter v2)
+ //I2C (GLCD-Shield or MI0283QT Adapter v2)
 
 Hoofdmenu::Hoofdmenu() {
 
-	//init display
-	lcd.begin();
-
-	//clear screen
-	lcd.fillScreen(RGB(226, 30, 30)); //achtergrond
+	
 
 }
 

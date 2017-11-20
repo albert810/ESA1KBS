@@ -21,12 +21,12 @@
     <ClInclude Include="__vm\.Main.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Hoofdmenu.h">
+    <ClInclude Include="Communication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Hoofdmenu.cpp">
+    <ClCompile Include="Communication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,9 +5,14 @@
 */
 
 // the setup function runs once when you press reset or power the board
+
+
+
 #include "Hoofdmenu.h"
 
+using namespace std;
+
 int main(void) {
-	Hoofdmenu h1;
+	std::nullptr_t;
 	return 0;
 }

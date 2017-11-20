@@ -5,20 +5,20 @@
 * Author: henry
 */
 
-#include <GraphicsLib.h>
-#include <ArduinoNunchuk.h>
-#include <MI0283QT9.h>
+
 #include <DS1307.h>
-#include <wiring_private.h>
 #include "Hoofdmenu.h"
+#include <ArduinoNunchuk.h>
+#include <Wire.h>
+#include <MI0283QT9.h>
 /*declaratie variabelen*/
 
+using namespace std;
+
 MI0283QT9 lcd; //I2C (GLCD-Shield or MI0283QT Adapter v2)
-ArduinoNunchuk nunchuk = ArduinoNunchuk();
 
 Hoofdmenu::Hoofdmenu() {
 
-	nunchuk.init();
 	//init display
 	lcd.begin();
 
@@ -26,6 +26,5 @@ Hoofdmenu::Hoofdmenu() {
 	lcd.fillScreen(RGB(226, 30, 30)); //achtergrond
 
 }
-
 
 

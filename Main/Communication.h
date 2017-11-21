@@ -9,8 +9,19 @@ public:
 	Communication();
 	void pulseIR(long microsecs);
 	void enableTimer1();
+	int* prepareDataCommands(int object);
+	void sendSingleData(int object);
+	enum bitIdentity {
+		
+		bitIsTrue = 100,
+		bitIsFalse = 200,
+		stopBit = 300
+
+	};
+
 protected:
 private:
+
 };
 
 #if defined(ARDUINO) && ARDUINO >= 100

@@ -40,14 +40,16 @@ void setup()
 	lcd.begin();
 
 	//make the screen grey
-	lcd.fillScreen(RGB(120, 120, 120)); 
+	lcd.fillScreen(RGB(120, 120, 120));
+	//draw the bombermanname
+	lcd.drawText(20, 40, "Bomberman", RGB(0, 0, 0), RGB(120, 120, 120), 4);
 	//draw the start button
 	lcd.fillRect(60, 105, 200, 50, RGB(178, 34, 34));
 	lcd.drawRect(60, 105, 200, 50, RGB(0, 0, 0));
-	lcd.drawText(83, 115, "Start", RGB(0, 0, 0), RGB(178,34,34), 4.5);
 	//draw the highscores button
-	lcd.fillRect(60, 165, 200, 50, RGB(178, 34, 34));
+		lcd.fillRect(60, 165, 200, 50, RGB(178, 34, 34));
 	lcd.drawRect(60, 165, 200, 50, RGB(0, 0, 0));
+	lcd.drawText(81, 183, "Highscores", RGB(0, 0, 0), RGB(178, 34, 34), 2);
 	
 }
 void loop()

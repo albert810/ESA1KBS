@@ -89,7 +89,7 @@ void Communication::sendSingleData(int object)
 1 = 100
 0 = 200
 */
-	listOfCommands = c.prepareDataCommands(object);
+	listOfCommands = this->prepareDataCommands(object);
 
 	//TODO:pulsen verzenden testen en timen 
 	for (int i = 0; i <= 4; i++) {

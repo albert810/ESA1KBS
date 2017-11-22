@@ -15,13 +15,12 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <stdint.h>
+#include "Hoofdmenu.cpp"
 
 volatile uint8_t teller = 0;
 int counter = 0;
-int buttoncount = 0;
-MI0283QT9 lcd; //I2C (GLCD-Shield or MI0283QT Adapter v2)
-ArduinoNunchuk nunchuk = ArduinoNunchuk();
 Communication c;
+
 void setup()
 {
 	/*c.enableTimer1();
@@ -34,80 +33,12 @@ void setup()
 	sbi(TCCR1A, WGM10);
 	*/
 	
-	Serial.begin(9600);
-	nunchuk.init();
-	//init display
-	lcd.begin();
-
-	//make the screen grey
-	lcd.fillScreen(RGB(120, 120, 120));
-	//draw the bombermanname
-	lcd.drawText(20, 40, "Bomberman", RGB(0, 0, 0), RGB(120, 120, 120), 4);
-	nunchuk.init();
-	welkebutton();
 }
 
-void buttonstart(int ingedrukt) {
-		//draw the start button
-	if (ingedrukt == 0 || 2) {
-		lcd.fillRect(55, 100, 220, 60, RGB(120, 120, 120));
-		lcd.fillRect(60, 105, 200, 50, RGB(178, 34, 34));
-		lcd.drawRect(60, 105, 200, 50, RGB(0, 0, 0));
-		lcd.drawText(83, 115, "Start", RGB(0, 0, 0), RGB(178, 34, 34), 4.5);
-	}
-		if (ingedrukt == 1) {
-			lcd.drawRect(57, 102, 206, 56, RGB(0, 0, 0));
-	}
-		nunchuk.update();
-}
-
-void buttonscores(int ingedrukt2) {
-	if (ingedrukt2 == 0 || 2) {
-		//draw the highscores button
-		lcd.fillRect(55, 160, 220, 60, RGB(120, 120, 120));
-		lcd.fillRect(60, 165, 200, 50, RGB(178, 34, 34));
-		lcd.drawRect(60, 165, 200, 50, RGB(0, 0, 0));
-		lcd.drawText(81, 183, "Highscores", RGB(0, 0, 0), RGB(178, 34, 34), 2);
-	}
-	if (ingedrukt2 == 1) {
-		lcd.drawRect(57, 162, 206, 56, RGB(0, 0, 0));
-	}
-	nunchuk.update();	
-}
-
-void welkebutton() {
-	if (nunchuk.analogY > 155) {
-		buttoncount--; 
-		}
-	else if (nunchuk.analogY < 100) {
-		buttoncount++; 
-		}
-	if (buttoncount == 1) {
-		buttonstart(1);
-	}
-	else {
-		buttonstart(0);
-	}
-	if (buttoncount == 2) {
-		buttonscores(1);
-	}
-	else {
-		buttonscores(0);
-	}
-	if (buttoncount > 2) {
-		buttoncount = 2;
-	}
-	if (buttoncount < 0) {
-		buttoncount = 0;
-	}
-	Serial.println(buttoncount);
-	
-}
 
 void loop()
 {
-	welkebutton();
-
+	
 }
 
 /*

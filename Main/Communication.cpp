@@ -106,7 +106,7 @@ void Communication::receiveIRpuls()
 	uint16_t highpulse, lowpulse;  // temporary storage timing
 	uint8_t currentpulse = 0; // index for pulses we're storing
 
-	if ((highpulse >= MAXPULSE) && (currentpulse != 0))
+	if ((highpulse >= MAXPULSE) && (currentpulse != 0)){}
 
 
 }

@@ -7,7 +7,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <stdint.h>
-
+#define MAXPULSE 400
 Communication::Communication() {
 
 
@@ -16,13 +16,14 @@ Communication::Communication() {
 void Communication::pulseIR(long microsecs)
 {
 	cli();  // this turns off any background interrupts
-	DDRB |= (1 << DDB5); //pin 13 output
+			//8 en 11 doen het
+	DDRB |= (1 << DDB3); //pin 11 output
 
 	while (microsecs > 0) {
 		// 38 kHz = 13 microseconds high and 13 microseconds low
-		PORTB |= (1 << PORTB5);       // high 3ms
+		PORTB |= (1 << PORTB3);       // high 3ms
 		delayMicroseconds(10);         // 10ms
-		PORTB &= ~(1 << PORTB5);           // low 3ms
+		PORTB &= ~(1 << PORTB3);           // low 3ms
 		delayMicroseconds(10);         // 10ms
 
 
@@ -97,4 +98,15 @@ void Communication::sendSingleData(int object)
 	}
 
 	
+}
+
+void Communication::receiveIRpuls()
+{
+	uint16_t * pulses = new uint16_t;
+	uint16_t highpulse, lowpulse;  // temporary storage timing
+	uint8_t currentpulse = 0; // index for pulses we're storing
+
+	if ((highpulse >= MAXPULSE) && (currentpulse != 0))
+
+
 }

@@ -4,7 +4,6 @@
  Author:	Albert
 */
 #include "Communication.cpp"
-
 #include "Communication.h"
 #include <GraphicsLib.h>
 #include <DS1307.h>
@@ -59,6 +58,7 @@ void buttonstart(int ingedrukt) {
 		if (ingedrukt == 1) {
 			lcd.drawRect(57, 102, 206, 56, RGB(0, 0, 0));
 	}
+		nunchuk.update();
 }
 
 void buttonscores(int ingedrukt2) {
@@ -72,6 +72,7 @@ void buttonscores(int ingedrukt2) {
 	if (ingedrukt2 == 1) {
 		lcd.drawRect(57, 162, 206, 56, RGB(0, 0, 0));
 	}
+	nunchuk.update();	
 }
 
 void welkebutton() {
@@ -100,12 +101,13 @@ void welkebutton() {
 		buttoncount = 0;
 	}
 	Serial.println(buttoncount);
+	
 }
 
 void loop()
 {
-	nunchuk.update(); //refresh nunchuk parameters
 	welkebutton();
+
 }
 
 /*

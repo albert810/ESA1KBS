@@ -50,21 +50,27 @@ void setup()
 
 void buttonstart(int ingedrukt) {
 		//draw the start button
+	if (ingedrukt == 0 || 2) {
+		lcd.fillRect(55, 100, 220, 60, RGB(120, 120, 120));
 		lcd.fillRect(60, 105, 200, 50, RGB(178, 34, 34));
 		lcd.drawRect(60, 105, 200, 50, RGB(0, 0, 0));
 		lcd.drawText(83, 115, "Start", RGB(0, 0, 0), RGB(178, 34, 34), 4.5);
+	}
 		if (ingedrukt == 1) {
-			lcd.drawRect(55, 95, 220, 70, RGB(0, 0, 0));
+			lcd.drawRect(57, 102, 206, 56, RGB(0, 0, 0));
 	}
 }
 
 void buttonscores(int ingedrukt2) {
-	//draw the highscores button
-	lcd.fillRect(60, 165, 200, 50, RGB(178, 34, 34));
-	lcd.drawRect(60, 165, 200, 50, RGB(0, 0, 0));
-	lcd.drawText(81, 183, "Highscores", RGB(0, 0, 0), RGB(178, 34, 34), 2);
+	if (ingedrukt2 == 0 || 2) {
+		//draw the highscores button
+		lcd.fillRect(55, 160, 220, 60, RGB(120, 120, 120));
+		lcd.fillRect(60, 165, 200, 50, RGB(178, 34, 34));
+		lcd.drawRect(60, 165, 200, 50, RGB(0, 0, 0));
+		lcd.drawText(81, 183, "Highscores", RGB(0, 0, 0), RGB(178, 34, 34), 2);
+	}
 	if (ingedrukt2 == 1) {
-		lcd.drawRect(55, 155, 220, 70, RGB(0, 0, 0));
+		lcd.drawRect(57, 162, 206, 56, RGB(0, 0, 0));
 	}
 }
 
@@ -82,7 +88,7 @@ void welkebutton() {
 		buttonstart(0);
 	}
 	if (buttoncount == 2) {
-		buttonscores;
+		buttonscores(1);
 	}
 	else {
 		buttonscores(0);
@@ -90,12 +96,16 @@ void welkebutton() {
 	if (buttoncount > 2) {
 		buttoncount = 2;
 	}
+	if (buttoncount < 0) {
+		buttoncount = 0;
+	}
 	Serial.println(buttoncount);
 }
 
 void loop()
 {
-	
+	nunchuk.update(); //refresh nunchuk parameters
+	welkebutton();
 }
 
 /*

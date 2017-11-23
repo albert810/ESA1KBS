@@ -11,7 +11,9 @@ public:
 	void enableTimer1();
 	int* prepareDataCommands(int object);
 	void sendSingleData(int object);
-	void receiveIRpuls();
+	void initReceiver();
+	void readPulse();
+	void printPulses();
 	enum bitIdentity {
 		
 		bitIsTrue = 100,
@@ -21,9 +23,10 @@ public:
 	};
 
 protected:
+	
+
 private:
-
-
+	
 };
 
 #if defined(ARDUINO) && ARDUINO >= 100

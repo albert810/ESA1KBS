@@ -7,7 +7,15 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <stdint.h>
-#define MAXPULSE 400
+
+#define IRRECV_PIN PIND
+#define IRRECV 2
+#define MAXLISTEN 400
+#define RESOLUTION 10
+uint16_t pulses[100][2];  // pair is high and low pulse 
+uint8_t currentpulse = 0; // index for pulses we're storing
+int count = 0;
+
 Communication::Communication() {
 
 
@@ -100,13 +108,55 @@ void Communication::sendSingleData(int object)
 	
 }
 
-void Communication::receiveIRpuls()
-{
-	uint16_t * pulses = new uint16_t;
-	uint16_t highpulse, lowpulse;  // temporary storage timing
-	uint8_t currentpulse = 0; // index for pulses we're storing
+//=====================FUNCTIES ONTVANGER=======================================
+void Communication::initReceiver() {
 
-	if ((highpulse >= MAXPULSE) && (currentpulse != 0)){}
+	Serial.begin(9600);
+	Serial.println("READY");
 
+}
 
+void Communication::readPulse() {
+	uint16_t hipulse, lowpulse;
+	hipulse = lowpulse = 0;
+
+	while (IRRECV_PIN & (1 << IRRECV)) {
+		hipulse++;
+		delayMicroseconds(RESOLUTION);
+		//als de puls te lang duurt of als er niets ontvangen is
+		if ((hipulse >= MAXLISTEN) && (currentpulse != 0)) {
+			currentpulse = 0;
+			
+			return;
+		}
+	}
+	pulses[currentpulse][0] = hipulse;
+
+	while (!(IRRECV_PIN & _BV(IRRECV))) {
+		lowpulse++;
+		delayMicroseconds(RESOLUTION);
+		if ((lowpulse >= MAXLISTEN) && (currentpulse != 0)) {
+			currentpulse = 0;
+			return;
+		}
+
+	}
+	pulses[currentpulse][1] = lowpulse;
+	
+	//hi-low puls combinatie gelezen, kan verder
+	printPulses();
+	currentpulse++;
+}
+void Communication::printPulses() {
+	for (uint8_t i = 0; i < currentpulse; i++) {
+
+		if (pulses[i][1] * RESOLUTION > 400 && pulses[i][1] * RESOLUTION < 600) {
+			Serial.println("1");
+		}
+		else {
+			Serial.println("0");
+		}
+		count++;
+		Serial.println(count);
+	}
 }

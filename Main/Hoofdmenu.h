@@ -1,6 +1,8 @@
 // hoofdmenu.h
 #include <ArduinoNunchuk.h>
 #include <MI0283QT9.h>
+#include "Game.h"
+#include "Game.cpp"
 
 #ifndef _HOOFDMENUU_h
 #define _HOOFDMENUU_h
@@ -14,14 +16,16 @@
 class hoofdmenuu {
 
 public:
+	hoofdmenuu();
 	void buttonstart(int);
 	void buttonscores(int);
 	void welkebutton();
 	void hoofdmenuloop();
 	void hoofdmenusetup();
+
 protected:
 private:
-	int buttoncount = 0;
+	int buttoncount = 1;
 	MI0283QT9 lcd; //I2C (GLCD-Shield or MI0283QT Adapter v2)
 	ArduinoNunchuk nunchuk = ArduinoNunchuk();
 };

@@ -7,6 +7,7 @@ Author:	Albert
 #include "Game.h"
 #include "Communication.h"
 #include "Hoofdmenu.h"
+#include "Hoofdmenu.cpp"
 
 main() {
 	init();

@@ -4,8 +4,7 @@ Created:	11/16/2017 1:22:40 PM
 Author:	Henry
 */
 #include "Hoofdmenu.h"
-#include "Game.h"
-#include "Game.cpp"
+
 
 hoofdmenuu::hoofdmenuu()
 {
@@ -71,8 +70,10 @@ void hoofdmenuu::hoofdmenuloop()
 	if (nunchuk.cButton) {
 		_delay_ms(10);
 		if (buttoncount == 1) {
-			//verwijst door als button 1 met button c ingedrukt word
-			lcd.fillScreen(RGB(120, 120, 120));
+			//verwijst door als button 1 met button c ingedrukt word naar de game
+			Speelveld speelveld(2,2,15,15);
+			speelveld.SetupSpeelveld(lcd, nunchuk);
+			return;
 		}
 		else if (buttoncount == 2) {
 			//verwijst door als button 2 met button c ingedrukt word

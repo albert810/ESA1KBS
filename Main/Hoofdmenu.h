@@ -1,8 +1,7 @@
 // hoofdmenu.h
 #include <ArduinoNunchuk.h>
 #include <MI0283QT9.h>
-#include "Game.h"
-#include "Game.cpp"
+
 
 #ifndef _HOOFDMENUU_h
 #define _HOOFDMENUU_h

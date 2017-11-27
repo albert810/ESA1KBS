@@ -59,7 +59,7 @@ void hoofdmenuu::welkebutton()
 	}
 	if (buttoncount < 1) {
 		buttoncount = 1;
-	}
+	}	
 }
 
 void hoofdmenuu::hoofdmenuloop()
@@ -67,6 +67,20 @@ void hoofdmenuu::hoofdmenuloop()
 	nunchuk.update();
 	while (nunchuk.analogY < 125 || nunchuk.analogY > 137) {
 		welkebutton();
+	}
+	if (nunchuk.cButton) {
+		_delay_ms(10);
+		if (buttoncount == 1) {
+			//verwijst door als button 1 met button c ingedrukt word
+			lcd.fillScreen(RGB(120, 120, 120));
+		}
+		else if (buttoncount == 2) {
+			//verwijst door als button 2 met button c ingedrukt word
+			lcd.fillScreen(RGB(200, 200, 200));
+		}
+		if (nunchuk.zButton) {
+			hoofdmenusetup();
+		}
 	}
 }
 

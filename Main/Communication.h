@@ -12,10 +12,11 @@ public:
 	int* prepareDataCommands(int object);
 	void sendSingleData(int object);
 	void initReceiver();
-	void readPulse();
+	void readPulses();
 	void printPulses();
+	void testVoorAlbert();
 	enum bitIdentity {
-		
+
 		bitIsTrue = 100,
 		bitIsFalse = 200,
 		stopBit = 300
@@ -23,7 +24,8 @@ public:
 	};
 
 protected:
-	
+
+
 
 private:
 	

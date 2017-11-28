@@ -8,13 +8,14 @@
 #include <avr/interrupt.h>
 #include <stdint.h>
 
-#define IRRECV_PIN PIND
-#define IRRECV 2
-#define MAXLISTEN 400
-#define RESOLUTION 10
-uint16_t pulses[100][2];  // pair is high and low pulse 
-uint8_t currentpulse = 0; // index for pulses we're storing
+#define IRONTVANGPIN      PINB
+#define IRPINNUM          0
+#define MAXONTV 600
+
+uint16_t pulses[100][2];  // 2 array's voor hoge en lage pulsen 
+uint8_t currentpulse = 0; // houdt bij hoeveel pulsen er in 1 array zitten
 int count = 0;
+
 
 Communication::Communication() {
 
@@ -109,54 +110,72 @@ void Communication::sendSingleData(int object)
 }
 
 //=====================FUNCTIES ONTVANGER=======================================
-void Communication::initReceiver() {
 
-	Serial.begin(9600);
-	Serial.println("READY");
 
-}
 
-void Communication::readPulse() {
-	uint16_t hipulse, lowpulse;
-	hipulse = lowpulse = 0;
 
-	while (IRRECV_PIN & (1 << IRRECV)) {
-		hipulse++;
-		delayMicroseconds(RESOLUTION);
-		//als de puls te lang duurt of als er niets ontvangen is
-		if ((hipulse >= MAXLISTEN) && (currentpulse != 0)) {
+void Communication::readPulses() {
+
+
+	uint16_t highpulse, lowpulse;  // temporary storage timing
+	highpulse = lowpulse = 0; // start out with no pulse length
+
+	while (IRONTVANGPIN & (1 << IRPINNUM)) {
+		// pin is hoog
+		highpulse++;
+		
+
+		//wanneer tijd tussen pulsen langer is dan de maximale luistertijd(MAXONTV)
+		//print of verstuurt de ontvanger de array van de pulsen die wel ontvangen zijn
+		//vanaf dat moment is de array klaar en vormt een byte
+		//onderscheid tussen byte's wordt dus op deze manier bepaald
+		if ((highpulse >= MAXONTV) && (currentpulse != 0)) {
+			printPulses();
 			currentpulse = 0;
-			
 			return;
 		}
 	}
-	pulses[currentpulse][0] = hipulse;
+	// we didn't time out so lets stash the reading
+	pulses[currentpulse][0] = highpulse;
 
-	while (!(IRRECV_PIN & _BV(IRRECV))) {
+	// zelfde while als bovenstaande maar dan met lowpulse(pulsen die daadwerkelijk gelezen worden)
+	while (!(IRONTVANGPIN & _BV(IRPINNUM))) {
+		// pin is laag
 		lowpulse++;
-		delayMicroseconds(RESOLUTION);
-		if ((lowpulse >= MAXLISTEN) && (currentpulse != 0)) {
+		
+		if ((lowpulse >= MAXONTV) && (currentpulse != 0)) {
+			printPulses();
 			currentpulse = 0;
 			return;
 		}
-
 	}
 	pulses[currentpulse][1] = lowpulse;
-	
-	//hi-low puls combinatie gelezen, kan verder
-	printPulses();
+
+	// een hoog-laag puls gelezen, programma leest verder.
 	currentpulse++;
 }
-void Communication::printPulses() {
+
+//printfuncties voor de ontvangen byte's
+//alle pulsen hoger dan 500 worden 1
+//alles daaronder wordt een 0
+//500 omdat dit is wat binnenkomt als de verzender een 1(300) verstuurd
+//kan later gebruikt worden voor dataverwerking
+void Communication::printPulses(void) {
+	
 	for (uint8_t i = 0; i < currentpulse; i++) {
 
-		if (pulses[i][1] * RESOLUTION > 400 && pulses[i][1] * RESOLUTION < 600) {
-			Serial.println("1");
+		if(pulses[i][1] > 500 && pulses[i][1] < 600){
+		Serial.print("1");
+
+
+		} else{
+		 Serial.print("0");
 		}
-		else {
-			Serial.println("0");
-		}
-		count++;
-		Serial.println(count);
+		//Serial.print(pulses[i][1] );
+		//Serial.println(" usec");
+		
 	}
+	count++;
+	Serial.println("\nno");
+	Serial.println(count);
 }

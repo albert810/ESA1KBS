@@ -71,8 +71,17 @@ void hoofdmenuu::hoofdmenuloop()
 		_delay_ms(10);
 		if (buttoncount == 1) {
 			//verwijst door als button 1 met button c ingedrukt word naar de game
-			Speelveld speelveld(2,2,15,15);
-			speelveld.SetupSpeelveld(lcd, nunchuk);
+		
+			//Speelveld mask(2, 2, 15, 15);
+			//this->speelveld[0] = mask;
+			//this->speelveld[0].SetupSpeelveld(lcd, nunchuk);
+
+
+			this->speelveld.constructorAlternatief(2, 2, 15, 15);
+			this->speelveld.SetupSpeelveld(lcd, nunchuk);
+		
+			//Speelveld speelveld(2,2,15,15);
+			//speelveld.SetupSpeelveld(lcd, nunchuk);
 			return;
 		}
 		else if (buttoncount == 2) {

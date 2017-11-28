@@ -20,6 +20,8 @@ public:
 	int currentXLocation;
 	int currentYlocation;
 	void drawPoppetje(int locationX, int locationY);
+	void dropBomb();
+	void removeBomb();
 	MI0283QT9 lcd;
 private:
 protected:

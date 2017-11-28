@@ -21,6 +21,25 @@ Speelveld::Speelveld(int startPositionForPlayer1X, int startPositionForPlayer1Y,
 
 }
 
+Speelveld::Speelveld()
+{
+}
+
+void Speelveld::constructorAlternatief(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y)
+{
+	//achtergrond groen maken
+	lcdGame.fillScreen(RGB(0, 53, 0));
+	//instellen startlocatie speler 1
+	this->speler1.setCurrentXLocation(startPositionForPlayer1X);
+	this->speler1.setCurrentYLocation(startPositionForPlayer1Y);
+	//instellen startlocatie speler 2
+	this->speler2.setCurrentXLocation(startPositionForPlayer2X);
+	this->speler2.setCurrentYLocation(startPositionForPlayer2Y);
+	
+	
+
+}
+
 void Speelveld::setLCD(MI0283QT9 lcd)
 {
 	this->lcdGame = lcd;
@@ -98,4 +117,5 @@ Serial.begin(9600);
 			
 		}
 		
+		this->spelersZijnIngesteld = 1;
 }

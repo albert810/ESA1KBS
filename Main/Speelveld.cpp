@@ -18,6 +18,7 @@ Speelveld::Speelveld(int startPositionForPlayer1X, int startPositionForPlayer1Y,
 	this->speler2.setCurrentXLocation(startPositionForPlayer2X);
 	this->speler2.setCurrentYLocation(startPositionForPlayer2Y);
 
+
 }
 
 void Speelveld::setLCD(MI0283QT9 lcd)
@@ -93,7 +94,7 @@ Serial.begin(9600);
 				this->lcdGame.drawRect(x, y, 20, 20, 0);
 			}
 			
-
+			this->speler1.drawPoppetje(this->locationsOfMap[18].XLocation, this->locationsOfMap[18].YLocation);
 			
 		}
 		

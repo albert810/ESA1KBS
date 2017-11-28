@@ -24,9 +24,27 @@
     <ClInclude Include="Communication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Speelveld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Locatie.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Poppetje.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Communication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Speelveld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Locatie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Poppetje.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

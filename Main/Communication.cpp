@@ -106,8 +106,9 @@ void Communication::sendSingleData(int object)
 
 	//TODO:pulsen verzenden testen en timen 
 	for (int i = 0; i <= 4; i++) {
-		//pulseIR(listOfCommands[i]);
-		Serial.println(listOfCommands[i]);
+		pulseIR(listOfCommands[i]);
+		//Serial.println(listOfCommands[i]);
+		delayMicroseconds(200);
 	}
 	free(listOfCommands);
 	

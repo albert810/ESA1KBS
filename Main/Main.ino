@@ -5,13 +5,9 @@ Author:	Albert
 */
 
 #include "Poppetje.h"
-#include "Poppetje.cpp"
 #include "Locatie.h"
-#include "Locatie.cpp"
 #include "Speelveld.h"
-#include "speelveld.cpp"
 #include "Communication.h"
-#include "Communication.cpp"
 #include "Hoofdmenu.h"
 #include <avr\interrupt.h>
 #include <wiring_private.h>

@@ -93,7 +93,10 @@ int* Communication::prepareDataCommands(int object)
 
 void Communication::sendSingleData(int object)
 {
-	int * listOfCommands = new int;
+
+	int * listOfCommands=(int *)malloc(sizeof(listOfCommands)); 
+	listOfCommands = new int;
+	
 
 /*Er wordt een array van 4 groot gemaakt van tijdsintervallen die aangeven of een bit 1 of 0 is 
 1 = 100
@@ -104,8 +107,10 @@ void Communication::sendSingleData(int object)
 	//TODO:pulsen verzenden testen en timen 
 	for (int i = 0; i <= 4; i++) {
 		pulseIR(listOfCommands[i]);
+		//Serial.println(listOfCommands[i]);
+		delayMicroseconds(200);
 	}
-
+	free(listOfCommands);
 	
 }
 

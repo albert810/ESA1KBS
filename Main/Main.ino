@@ -10,7 +10,7 @@ Author:	Albert
 #include "Communication.h"
 #include "Hoofdmenu.h"
 #include <avr\interrupt.h>
-#include <wiring_private.h>
+
 
 
 Communication c;
@@ -23,22 +23,21 @@ main() {
 	init();
 	
 	c.enableTimer1();
-	// set timer 1 prescale factor to 64
-	sbi(TCCR1B, CS10);
-	sbi(TCCR1B, CS12);
-	// put timer 1 in 8-bit phase correct pwm mode
-	sbi(TCCR1A, WGM10);
+
 
 	
 	
 	
-
+	
+	//c.sendSingleData(3);
 
 	h.hoofdmenusetup();
 
 	while (1)
 	{
+		//c.readPulses();
 		h.hoofdmenuloop();
+		
 	}
 }
 
@@ -77,9 +76,6 @@ ISR(TIMER1_COMPA_vect)
 			}
 
 		}
-
-
-
 
 	}
 	

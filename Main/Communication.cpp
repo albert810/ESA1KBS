@@ -7,6 +7,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <stdint.h>
+#include <wiring_private.h>
 
 #define IRONTVANGPIN      PINB
 #define IRPINNUM          0
@@ -65,6 +66,11 @@ void Communication::enableTimer1()
 
 	// enable global interrupts:
 	sei();
+	// set timer 1 prescale factor to 64
+	sbi(TCCR1B, CS10);
+	sbi(TCCR1B, CS12);
+	// put timer 1 in 8-bit phase correct pwm mode
+	sbi(TCCR1A, WGM10);
 
 }
 

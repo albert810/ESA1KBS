@@ -23,7 +23,8 @@ public:
 	void hoofdmenusetup();
 	Speelveld speelveld = Speelveld();
 	ArduinoNunchuk nunchuk = ArduinoNunchuk();
-
+	void setPageState(PageState Currentpage);
+	PageState pageState;
 protected:
 private:
 	int buttoncount = 1;

@@ -113,9 +113,68 @@ Serial.begin(9600);
 				this->lcdGame.drawRect(x, y, 20, 20, 0);
 			}
 			
-			this->speler1.drawPoppetje(this->locationsOfMap[18].XLocation, this->locationsOfMap[18].YLocation);
-			
+			this->speler1.drawPoppetje(speler1.currentXLocation, speler1.currentYlocation);
 		}
 		
 		this->spelersZijnIngesteld = 1;
+		
+}
+
+void Speelveld::verplaatsPoppetje()
+{
+	nunchuk.update();
+	//omhoog
+	if (nunchuk.analogY > 155) {
+		this->speler1.currentYlocation--;//
+		this->vorigeLocatie = omhoog;
+		Serial.println("omhoog");
+	}
+	//omlaag
+	else if (nunchuk.analogY < 100) {
+		this->speler1.currentYlocation++; //
+		this->vorigeLocatie = omlaag;
+		Serial.println("omlaag");
+
+	}
+	//rechts
+	else if (nunchuk.analogX > 155) {
+		this->speler1.currentXLocation++;
+		this->vorigeLocatie = rechts;
+		Serial.println("rechts");
+
+	}
+	//links
+	else if (nunchuk.analogX < 100) {
+		this->speler1.currentXLocation--;
+		this->vorigeLocatie = links;
+		Serial.println("links");
+
+	}
+	nunchuk.update();
+
+}
+
+void Speelveld::tekenVerplaatsingPoppetje()
+{
+	int x = (this->speler1.currentXLocation * 20) - 20;
+	int y= (this->speler1.currentYlocation * 20) - 20;
+
+	switch (this->vorigeLocatie) {
+
+	case omhoog: y= ((this->speler1.currentYlocation+1) * 20) - 20;
+	break;
+	case omlaag: y= ((this->speler1.currentYlocation - 1) * 20) - 20;
+	break;
+	case links: x= ((this->speler1.currentXLocation+1) * 20) - 20;
+	break;
+	case rechts: x= ((this->speler1.currentXLocation-1) * 20) - 20;
+	break;
+	}
+	this->lcdGame.fillRect(x, y, 20, 20, RGB(0, 53, 0));
+
+
+	speler1.drawPoppetje(speler1.currentXLocation, speler1.currentYlocation);//huidige poppetje tekenen
+	
+	//this->lcdGame.drawRect()
+	
 }

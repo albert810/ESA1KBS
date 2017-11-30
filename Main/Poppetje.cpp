@@ -34,8 +34,8 @@ void Poppetje::drawPoppetje(int locationX, int locationY)
 	this->lcd.fillRect(x, y,20,20,1);
 	*/
 
-	int x = (locationX * 20) - 20;
-	int y = (locationY * 20) - 20;
+	int x = (locationX * 20) - 15;
+	int y = (locationY * 20) - 12;
 
 	this->lcd.fillRect(x, y, 10, 7, RGB(204, 0, 0));
 	this->lcd.drawRect(x, y, 10, 7, 0);
@@ -56,11 +56,11 @@ void Poppetje::drawPoppetje(int locationX, int locationY)
 	this->lcd.fillRect(x + 6, y + 7, 4, 3, RGB(255, 255, 255));
 	this->lcd.drawRect(x + 6, y + 7, 4, 3, 0);
 
-	this->lcd.fillRect(x + 6, y + 10, 6, 3, RGB(204, 0, 0));
-	this->lcd.drawRect(x + 6, y + 10, 6, 3, 0);
+	this->lcd.fillRect(x + 6, y + 10, 6, 2, RGB(204, 0, 0));
+	this->lcd.drawRect(x + 6, y + 10, 6, 2, 0);
 
-	this->lcd.fillRect(x - 2, y + 10, 6, 3, RGB(204, 0, 0));
-	this->lcd.drawRect(x - 2, y + 10, 6, 3, 0);
+	this->lcd.fillRect(x - 2, y + 10, 6, 2, RGB(204, 0, 0));
+	this->lcd.drawRect(x - 2, y + 10, 6, 2, 0);
 	
 }
 

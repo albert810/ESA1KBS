@@ -4,84 +4,51 @@ Created:	11/16/2017 1:22:40 PM
 Author:	Albert
 */
 
+#include "PageState.h"
 #include "Poppetje.h"
-#include "Poppetje.cpp"
 #include "Locatie.h"
-#include "Locatie.cpp"
 #include "Speelveld.h"
-#include "speelveld.cpp"
 #include "Communication.h"
-#include "Communication.cpp"
 #include "Hoofdmenu.h"
+#include "Hoofdmenu.cpp"
 #include <avr\interrupt.h>
 
 
-
+PageState pagestate;
 Communication c;
-int counter = 0;
 hoofdmenuu h;
-int bomafgaan = 0;
-int toetsen = 0;
+int counter = 0;
+
+
 main() {
-	Serial.begin(9600);
 	init();
-	
+	Serial.begin(9600);
 	c.enableTimer1();
 
-
-	
-	
-	
-	
-	//c.sendSingleData(3);
-
+	h.setPageState(pagestate);
 	h.hoofdmenusetup();
 
 	while (1)
-	{
-		//c.readPulses();
-		h.hoofdmenuloop();
+	{	
+		if (h.pageState.hoofdmenu) 
+			h.hoofdmenuloop();
+
+		if (h.speelveld.spelersZijnIngesteld) {
+			h.speelveld.verplaatsPoppetje();
+			delay(100);
+			h.speelveld.tekenVerplaatsingPoppetje();
+		}
 		
 	}
 }
 
-
+//links is rechts -------rechts is links
 
 
 //timer die reageert op hardware
 //hier moet nog een klasse etc van gemaakt worden
 ISR(TIMER1_COMPA_vect)
 {
-	if (h.speelveld.spelersZijnIngesteld) {
 
-
-
-		toetsen++;
-		if (toetsen == 10) {
-			//nunchucktoetsbom
-			if (h.nunchuk.zButton) {
-				bomafgaan = 1;
-				h.speelveld.speler1.dropBomb();
-				Serial.println("bom op de grond gooien");
-				h.nunchuk.zButton = 0;
-			}
-			toetsen = 0;
-		}
-
-
-		if (bomafgaan) {
-			counter++;
-			if (counter == 180) {
-				Serial.println("bom ontploft");
-				h.speelveld.speler1.removeBomb();
-				h.speelveld.speler1.drawPoppetje(h.speelveld.speler1.currentXLocation, h.speelveld.speler1.currentYlocation);
-				bomafgaan = 0;
-				counter = 0;
-			}
-
-		}
-
-	}
-	
 }
 

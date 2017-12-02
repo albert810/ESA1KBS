@@ -14,7 +14,6 @@
 #include "Poppetje.h"
 class Speelveld {
 public:
-	
 	Location locationsOfMap[192];
 	Speelveld(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y);
 	Speelveld();
@@ -37,10 +36,10 @@ Een enum voor het helpen opslaan van de vorige locatie. Word gebruikt in de meth
 */
 enum locatiesVoorScherm
 {
-	omhoog = 1,
-	omlaag = 2,
-	links  = 3,
-	rechts = 4
+	omhoog = 0,
+	omlaag = 1,
+	links  = 2,
+	rechts = 3
 
 };
 int			vorigeLocatie;

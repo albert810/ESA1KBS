@@ -12,11 +12,11 @@ Speelveld::Speelveld(int startPositionForPlayer1X, int startPositionForPlayer1Y,
 	lcdGame.fillScreen(RGB(0, 53, 0));
 
 	//instellen startlocatie speler 1
-	this->speler1.setCurrentXLocation(startPositionForPlayer1X);
-	this->speler1.setCurrentYLocation(startPositionForPlayer1Y);
+	this->speler1.currentlocatie.setLocationX(startPositionForPlayer1X);
+	this->speler1.currentlocatie.setLocationY(startPositionForPlayer1Y);
 	//instellen startlocatie speler 2
-	this->speler2.setCurrentXLocation(startPositionForPlayer2X);
-	this->speler2.setCurrentYLocation(startPositionForPlayer2Y);
+	this->speler2.currentlocatie.setLocationX(startPositionForPlayer2X);
+	this->speler2.currentlocatie.setLocationY(startPositionForPlayer2Y);
 
 
 }
@@ -30,13 +30,12 @@ void Speelveld::constructorAlternatief(int startPositionForPlayer1X, int startPo
 	//achtergrond groen maken
 	lcdGame.fillScreen(RGB(0, 53, 0));
 	//instellen startlocatie speler 1
-	this->speler1.setCurrentXLocation(startPositionForPlayer1X);
-	this->speler1.setCurrentYLocation(startPositionForPlayer1Y);
+	this->speler1.currentlocatie.setLocationX(startPositionForPlayer1X);
+	this->speler1.currentlocatie.setLocationY(startPositionForPlayer1Y);
 	//instellen startlocatie speler 2
-	this->speler2.setCurrentXLocation(startPositionForPlayer2X);
-	this->speler2.setCurrentYLocation(startPositionForPlayer2Y);
-	
-	
+	this->speler2.currentlocatie.setLocationX(startPositionForPlayer2X);
+	this->speler2.currentlocatie.setLocationY(startPositionForPlayer2Y);
+
 
 }
 
@@ -63,13 +62,9 @@ void Speelveld::SetupSpeelveld(MI0283QT9 lcd, ArduinoNunchuk nunchuck)
 //het instellen van de game
 void Speelveld::drawBegin()
 {
-Serial.begin(9600);
-
-
 //Een mask voor het tijdelijk opslaan van de x locatie en de y locatie 
 		int Xmask = 1;
 		int Ymask = 1;
-
 
 // hier worden (16*12) 192 objecten aangemaakt en opgeslagen in een array, deze objecten zijn locaties
 		for (size_t i = 1; i < 193; i++)
@@ -103,21 +98,27 @@ Serial.begin(9600);
 			this->lcdGame.drawRect(x, (1 * 20) - 20, 20, 20, 0);
 			this->lcdGame.fillRect(x, (12 * 20) - 20, 20, 20, RGB(50, 50, 50));
 			this->lcdGame.drawRect(x, (12 * 20) - 20, 20, 20, 0);
+			this->locationsOfMap[i].onbreekbareMuur = 1;
 
 			if (this->locationsOfMap[i].XLocation==1){
 				this->lcdGame.fillRect(x, y, 20, 20, RGB(50, 50, 50));
 				this->lcdGame.drawRect(x, y, 20, 20, 0);
+				this->locationsOfMap[i].onbreekbareMuur = 1;
 			}
 			if (this->locationsOfMap[i].XLocation == 16) {
 				this->lcdGame.fillRect(x, y, 20, 20, RGB(50, 50, 50));
 				this->lcdGame.drawRect(x, y, 20, 20, 0);
+				this->locationsOfMap[i].onbreekbareMuur = 1;
+
 			}
 			
-			this->speler1.drawPoppetje(speler1.currentXLocation, speler1.currentYlocation);
+			this->speler1.drawPoppetje(speler1.currentlocatie.XLocation, this->speler1.currentlocatie.YLocation);
 		}
 		
 		this->spelersZijnIngesteld = 1;
 		
+
+
 }
 
 void Speelveld::verplaatsPoppetje()
@@ -125,29 +126,37 @@ void Speelveld::verplaatsPoppetje()
 	nunchuk.update();
 	//omhoog
 	if (nunchuk.analogY > 155) {
-		this->speler1.currentYlocation--;//
+		if(!this->locationsOfMap[speler1.currentlocatie.YLocation].onbreekbareMuur){
+		this->speler1.currentlocatie.YLocation--;
 		this->vorigeLocatie = omhoog;
 		Serial.println("omhoog");
+		Serial.println(this->speler1.currentlocatie.YLocation);
+		}
 	}
 	//omlaag
 	else if (nunchuk.analogY < 100) {
-		this->speler1.currentYlocation++; //
+		this->speler1.currentlocatie.YLocation++;
 		this->vorigeLocatie = omlaag;
 		Serial.println("omlaag");
+		Serial.println(this->speler1.currentlocatie.YLocation);
+
 
 	}
 	//rechts
 	else if (nunchuk.analogX > 155) {
-		this->speler1.currentXLocation++;
+		this->speler1.currentlocatie.XLocation++;
 		this->vorigeLocatie = rechts;
 		Serial.println("rechts");
+		Serial.println(this->speler1.currentlocatie.XLocation);
 
 	}
 	//links
 	else if (nunchuk.analogX < 100) {
-		this->speler1.currentXLocation--;
+		this->speler1.currentlocatie.XLocation--;
 		this->vorigeLocatie = links;
 		Serial.println("links");
+		Serial.println(this->speler1.currentlocatie.XLocation);
+
 
 	}
 	nunchuk.update();
@@ -156,24 +165,30 @@ void Speelveld::verplaatsPoppetje()
 
 void Speelveld::tekenVerplaatsingPoppetje()
 {
-	int x = (this->speler1.currentXLocation * 20) - 20;
-	int y= (this->speler1.currentYlocation * 20) - 20;
+	int x = (this->speler1.currentlocatie.XLocation * 20) - 20;
+	int y= (this->speler1.currentlocatie.YLocation * 20) - 20;
+
 
 	switch (this->vorigeLocatie) {
 
-	case omhoog: y= ((this->speler1.currentYlocation+1) * 20) - 20;
-	break;
-	case omlaag: y= ((this->speler1.currentYlocation - 1) * 20) - 20;
-	break;
-	case links: x= ((this->speler1.currentXLocation+1) * 20) - 20;
-	break;
-	case rechts: x= ((this->speler1.currentXLocation-1) * 20) - 20;
-	break;
+	case omhoog: y = ((this->speler1.currentlocatie.YLocation + 1) * 20) - 20;
+		break;
+	case omlaag: y = ((this->speler1.currentlocatie.YLocation - 1) * 20) - 20;
+		break;
+	case links: x = ((this->speler1.currentlocatie.XLocation + 1) * 20) - 20;
+		break;
+	case rechts: x = ((this->speler1.currentlocatie.XLocation- 1) * 20) - 20;
+		break;
 	}
+
+
+
+
+
 	this->lcdGame.fillRect(x, y, 20, 20, RGB(0, 53, 0));
 
 
-	speler1.drawPoppetje(speler1.currentXLocation, speler1.currentYlocation);//huidige poppetje tekenen
+	speler1.drawPoppetje(speler1.currentlocatie.XLocation, speler1.currentlocatie.YLocation);//huidige poppetje tekenen
 	
 	//this->lcdGame.drawRect()
 	

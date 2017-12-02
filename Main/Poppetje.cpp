@@ -9,16 +9,7 @@ Poppetje::Poppetje()
 
 }
 
-//setters
-void Poppetje::setCurrentXLocation(int x)
-{
-	this->currentXLocation = x;
-}
 
-void Poppetje::setCurrentYLocation(int y)
-{
-	this->currentYlocation = y;
-}
 
 
 
@@ -66,8 +57,8 @@ void Poppetje::drawPoppetje(int locationX, int locationY)
 
 void Poppetje::dropBomb()
 {
-	int x = (this->currentXLocation* 20) - 20;
-	int y = (this->currentYlocation* 20) - 20;
+	int x = (this->currentlocatie.XLocation* 20) - 20;
+	int y = (this->currentlocatie.YLocation* 20) - 20;
 	this->lcd.fillRect(x, y, 20, 20, RGB(50, 50, 50));
 
 	
@@ -76,8 +67,8 @@ void Poppetje::dropBomb()
 
 void Poppetje::removeBomb()
 {
-	int x = (this->currentXLocation * 20) - 20;
-	int y = (this->currentYlocation * 20) - 20;
+	int x = (this->currentlocatie.XLocation * 20) - 20;
+	int y = (this->currentlocatie.YLocation * 20) - 20;
 	this->lcd.fillRect(x, y, 20, 20, RGB(0, 53, 0));
 
 }

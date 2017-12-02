@@ -14,10 +14,9 @@ public:
 	int XLocation;
 	int YLocation;
 	Location();
-	int getXLocation();
-	int getYLocation();
 	void setLocationX(int x);
 	void setLocationY(int y);
+	boolean onbreekbareMuur;
 private:
 	
 

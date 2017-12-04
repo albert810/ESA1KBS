@@ -24,12 +24,14 @@ void	SetupSpeelveld(MI0283QT9 lcd, ArduinoNunchuk nunchuck);
 void	drawBegin();
 void	verplaatsPoppetje();
 void	tekenVerplaatsingPoppetje();
+void	maakMuren();
 
-ArduinoNunchuk nunchuk;
-MI0283QT9	lcdGame;
-Poppetje	speler1;
-Poppetje	speler2;
-boolean		spelersZijnIngesteld;
+int				locatieNummer=0;
+ArduinoNunchuk	nunchuk;
+MI0283QT9		lcdGame;
+Poppetje		speler1;
+Poppetje		speler2;
+boolean			spelersZijnIngesteld;
 
 /*
 Een enum voor het helpen opslaan van de vorige locatie. Word gebruikt in de methode verplaatspoppetje en tekenverplaatsingpoppetje

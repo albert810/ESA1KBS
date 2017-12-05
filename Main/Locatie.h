@@ -16,7 +16,8 @@ public:
 	Location();
 	void setLocationX(int x);
 	void setLocationY(int y);
-	boolean onbreekbareMuur;
+	boolean nietBegaanBareLocatie;
+	
 private:
 	
 

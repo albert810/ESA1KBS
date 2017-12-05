@@ -103,7 +103,7 @@ void Speelveld::drawBegin()
 
 			//instellen dat je niet door de randen kunt voor de Y
 			if (this->locationsOfMap[i].YLocation == 1 || this->locationsOfMap[i].YLocation == 12 || this->locationsOfMap[i].YLocation == 11) {
-			this->locationsOfMap[i].onbreekbareMuur = 1;
+			this->locationsOfMap[i].nietBegaanBareLocatie = 1;
 			this->lcdGame.fillRect(x, y, 20, 20, RGB(50, 50, 50));
 			this->lcdGame.drawRect(x, y, 20, 20, 0);
 			}
@@ -116,13 +116,13 @@ void Speelveld::drawBegin()
 			if (this->locationsOfMap[i].XLocation==1 ){
 				this->lcdGame.fillRect(x, y, 20, 20, RGB(50, 50, 50));
 				this->lcdGame.drawRect(x, y, 20, 20, 0);
-				this->locationsOfMap[i].onbreekbareMuur = 1;
+				this->locationsOfMap[i].nietBegaanBareLocatie = 1;
 
 			}
 			if (this->locationsOfMap[i].XLocation == 15) {
 				this->lcdGame.fillRect(x, y, 20, 20, RGB(50, 50, 50));
 				this->lcdGame.drawRect(x, y, 20, 20, 0);
-				this->locationsOfMap[i].onbreekbareMuur = 1;
+				this->locationsOfMap[i].nietBegaanBareLocatie = 1;
 
 			}
 			
@@ -143,30 +143,25 @@ void Speelveld::verplaatsPoppetje()
 	//wanneer men naar de ongewenste locatie wil wordt hij tegengehouden, door 1 plaats naar voren te kijken en te zien of daar 
 	//de boolean staat van of je er wel of niet doorheenmag.
 	if (nunchuk.analogY > 155) {
-		if (this->locationsOfMap[locatieNummer -16].onbreekbareMuur ) {
-			Serial.println("we mogen niet doorheen");
-				Serial.println(locatieNummer);
-			Serial.println(locationsOfMap[locatieNummer - 16].onbreekbareMuur);
+		if (this->locationsOfMap[locatieNummer -16].nietBegaanBareLocatie ) {
 		}
 		else{
 			this->locatieNummer = locatieNummer - 16;
 			this->speler1.currentlocatie.YLocation--;
 		this->vorigeLocatie = omhoog;
-		Serial.println(locatieNummer);
 		}
 	}
 	//omlaag
 	//wanneer men naar de ongewenste locatie wil wordt hij tegengehouden, door 1 plaats naar voren te kijken en te zien of daar 
 	//de boolean staat van of je er wel of niet doorheenmag.
 	else if (nunchuk.analogY < 100) {
-		if (this->locationsOfMap[locatieNummer + 16].onbreekbareMuur) {
+		if (this->locationsOfMap[locatieNummer + 16].nietBegaanBareLocatie) {
 		}
 		else{
 		this->locatieNummer = locatieNummer + 16;
 
 		this->speler1.currentlocatie.YLocation++;
 		this->vorigeLocatie = omlaag;
-		Serial.println(locatieNummer);
 		}
 
 	//	this->locatieNummer = locatieNummer + 16;
@@ -176,28 +171,24 @@ void Speelveld::verplaatsPoppetje()
 	//wanneer men naar de ongewenste locatie wil wordt hij tegengehouden, door 1 plaats naar voren te kijken en te zien of daar 
 	//de boolean staat van of je er wel of niet doorheenmag.
 	else if (nunchuk.analogX > 155) {
-		if(this->locationsOfMap[locatieNummer + 1].onbreekbareMuur){
+		if(this->locationsOfMap[locatieNummer + 1].nietBegaanBareLocatie){
 		}
 		else {
 			this->speler1.currentlocatie.XLocation++;
 			this->vorigeLocatie = rechts;
-			Serial.println("rechts");
 			this->locatieNummer = locatieNummer + 1;
-			Serial.println(speler1.currentlocatie.XLocation);
 		}
 	}
 	//links
 	//wanneer men naar de ongewenste locatie wil wordt hij tegengehouden, door 1 plaats naar voren te kijken en te zien of daar 
 	//de boolean staat van of je er wel of niet doorheenmag.
 	else if (nunchuk.analogX < 100) {
-		if (this->locationsOfMap[locatieNummer - 1].onbreekbareMuur) {
+		if (this->locationsOfMap[locatieNummer - 1].nietBegaanBareLocatie) {
 		}
 		else{
 		this->speler1.currentlocatie.XLocation--;
 		this->vorigeLocatie = links;
-		Serial.println("links");
 		this->locatieNummer = locatieNummer - 1;
-		Serial.println(speler1.currentlocatie.XLocation);
 		}
 
 	}
@@ -240,7 +231,7 @@ void Speelveld::maakMuren()
 	{
 		i++;
 
-		this->locationsOfMap[(i+(16*y))].onbreekbareMuur = 1;
+		this->locationsOfMap[(i+(16*y))].nietBegaanBareLocatie = 1;
 		this->lcdGame.fillRect((i * 20) - 20, ((y+1) * 20) - 20, 20, 20, RGB(50, 50, 50));
 		this->lcdGame.drawRect((i * 20) - 20, ((y+1) * 20) - 20, 20, 20, 0);
 

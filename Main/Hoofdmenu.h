@@ -23,11 +23,12 @@ public:
 	void hoofdmenusetup();
 	Speelveld speelveld = Speelveld();
 	ArduinoNunchuk nunchuk = ArduinoNunchuk();
-
+	void setPageState(PageState Currentpage);
+	PageState pageState;
 protected:
 private:
 	int buttoncount = 1;
-	MI0283QT9 lcd; //I2C (GLCD-Shield or MI0283QT Adapter v2)
+	MI0283QT9 lcd; //I2C (GLCD-Shield or MI0283QT Adapter v2
 };
 
 

@@ -9,16 +9,13 @@
 	#include "WProgram.h"
 #endif
 #include <MI0283QT9.h>
-
+#include "Locatie.h"
 class Poppetje {
-
+	
 public:
 	Poppetje();
-	void setCurrentXLocation(int x);
-	void setCurrentYLocation(int y);
 	//void setLCD(MI0283QT9 lcd );
-	int currentXLocation;
-	int currentYlocation;
+	Location currentlocatie;
 	void drawPoppetje(int locationX, int locationY);
 	void dropBomb();
 	void removeBomb();

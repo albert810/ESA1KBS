@@ -81,10 +81,10 @@ void hoofdmenuu::hoofdmenuloop()
 
 			this->speelveld.constructorAlternatief(2, 2, 15, 15);
 			this->speelveld.SetupSpeelveld(lcd, nunchuk);
-		
+			this->pageState.setHoofdMenu(false);
+			this->pageState.setGame(true);
 			//Speelveld speelveld(2,2,15,15);
 			//speelveld.SetupSpeelveld(lcd, nunchuk);
-			return;
 		}
 		else if (buttoncount == 2) {
 			//verwijst door als button 2 met button c ingedrukt word
@@ -107,4 +107,9 @@ void hoofdmenuu::hoofdmenusetup()
 	lcd.drawText(20, 40, "Bomberman", RGB(0, 0, 0), RGB(120, 120, 120), 4);
 	nunchuk.init();
 	welkebutton();
+}
+
+void hoofdmenuu::setPageState(PageState Currentpage)
+{
+	this->pageState = Currentpage;
 }

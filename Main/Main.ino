@@ -13,6 +13,7 @@ Author:	Albert
 #include "Hoofdmenu.h"
 #include "Hoofdmenu.cpp"
 #include <avr\interrupt.h>
+#include "PageState.ccp"
 
 
 PageState pagestate;

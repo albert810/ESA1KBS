@@ -98,6 +98,7 @@ void hoofdmenuu::hoofdmenusetup()
 {
 	nunchuk.init();
 	//init display
+	lcd.led(50);
 	lcd.begin();
 	//make the screen grey
 	lcd.fillScreen(RGB(120, 120, 120));

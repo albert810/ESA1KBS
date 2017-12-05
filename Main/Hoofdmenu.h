@@ -12,6 +12,8 @@
 #include "WProgram.h"
 #endif
 #include "speelveld.h"
+#include "PageState.h"
+
 class hoofdmenuu {
 
 public:

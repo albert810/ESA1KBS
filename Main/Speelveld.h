@@ -25,6 +25,9 @@ void	drawBegin();
 void	verplaatsPoppetje();
 void	tekenVerplaatsingPoppetje();
 void	maakMuren();
+void	DropBomb(int speler);
+
+int bomID;
 
 int				locatieNummer=0;
 ArduinoNunchuk	nunchuk;

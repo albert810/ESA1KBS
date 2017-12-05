@@ -129,10 +129,10 @@ void Speelveld::drawBegin()
 			this->speler1.drawPoppetje(speler1.currentlocatie.XLocation, this->speler1.currentlocatie.YLocation);
 		}
 		this->locatieNummer = 18;
-		
-		this->spelersZijnIngesteld = 1;
-	
+
 		this->maakMuren();
+
+		this->spelersZijnIngesteld = 1;
 
 }
 
@@ -201,6 +201,7 @@ void Speelveld::verplaatsPoppetje()
 		}
 
 	}
+
 	nunchuk.update();
 }
 
@@ -246,4 +247,45 @@ void Speelveld::maakMuren()
 	}
 	y++;
 	}	
+}
+
+void Speelveld::DropBomb(int speler)
+{
+	//in de argument this->speler1.bom.cooldownBom>
+
+	if (speler = 1) {
+
+		this->speler1.bom[1].cooldownBom++;
+
+		if (this->nunchuk.zButton && this->speler1.bom[1].cooldownBom > 50) {
+			Serial.println("bomgedropt");
+			this->speler1.bom[1].cooldownBom = 0;
+			this->bomID++;//1
+			this->speler1.bom[bomID].bomStatus = 1;
+			Serial.println(bomID);
+
+		}
+		if (this->speler1.bom[bomID].bomStatus) {
+			this->speler1.bom[bomID].aftellenTotExplosieBom++;
+		}
+		if (this->speler1.bom[bomID].aftellenTotExplosieBom > 180) {
+			this->speler1.bom[bomID].aftellenTotExplosieBom = 0;
+			this->speler1.bom[bomID].bomStatus = 0;
+			this->speler1.bom[bomID].ontploffing();
+			this->bomID--;
+
+		}
+
+
+
+
+		//to do voor speler 2
+		else
+		{
+			//this->speler2.bom.tekenBom();
+			//this->speler2.bom.cooldownBom = 0;
+			//this->speler2.bom.bomStatus = 1;
+		}
+
+	}
 }

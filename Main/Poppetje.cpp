@@ -55,20 +55,4 @@ void Poppetje::drawPoppetje(int locationX, int locationY)
 	
 }
 
-void Poppetje::dropBomb()
-{
-	int x = (this->currentlocatie.XLocation* 20) - 20;
-	int y = (this->currentlocatie.YLocation* 20) - 20;
-	this->lcd.fillRect(x, y, 20, 20, RGB(50, 50, 50));
 
-	
-	Serial.println("bom");
-}
-
-void Poppetje::removeBomb()
-{
-	int x = (this->currentlocatie.XLocation * 20) - 20;
-	int y = (this->currentlocatie.YLocation * 20) - 20;
-	this->lcd.fillRect(x, y, 20, 20, RGB(0, 53, 0));
-
-}

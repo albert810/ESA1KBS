@@ -10,6 +10,7 @@
 #endif
 #include <MI0283QT9.h>
 #include "Locatie.h"
+#include "Bom.h"
 class Poppetje {
 	
 public:
@@ -17,9 +18,10 @@ public:
 	//void setLCD(MI0283QT9 lcd );
 	Location currentlocatie;
 	void drawPoppetje(int locationX, int locationY);
-	void dropBomb();
-	void removeBomb();
 	MI0283QT9 lcd;
+	Bom bom[2];
+
+
 private:
 protected:
 

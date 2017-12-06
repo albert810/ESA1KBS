@@ -11,12 +11,13 @@
 class Location {
 public:
 
-	int XLocation;
-	int YLocation;
+	uint8_t XLocation;
+	uint8_t YLocation;
 	Location();
 	void setLocationX(int x);
 	void setLocationY(int y);
 	boolean nietBegaanBareLocatie;
+
 	
 private:
 	

@@ -14,27 +14,41 @@
 #include "Poppetje.h"
 class Speelveld {
 public:
-	Location locationsOfMap[192];
-	Speelveld(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y);
-	Speelveld();
-void	constructorAlternatief(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y);
-void	setLCD(MI0283QT9 lcd);
-void	setNunchuck(ArduinoNunchuk nunchuck);
-void	SetupSpeelveld(MI0283QT9 lcd, ArduinoNunchuk nunchuck);
-void	drawBegin();
-void	verplaatsPoppetje();
-void	tekenVerplaatsingPoppetje();
-void	maakMuren();
-void	DropBomb(int speler);
+	
 
-int bomID;
+//===================instellen programma===============
+				Speelveld(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y);
+				Speelveld();
+void			constructorAlternatief(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y);
+void			setLCD(MI0283QT9 lcd);
+void			setNunchuck(ArduinoNunchuk nunchuck);
+void			SetupSpeelveld(MI0283QT9 lcd, ArduinoNunchuk nunchuck);
+void			drawBegin();
 
-int				locatieNummer=0;
 ArduinoNunchuk	nunchuk;
-MI0283QT9		lcdGame;
+
+
+//===================spelers+poppetje==================
+void			verplaatsPoppetje();
+void			tekenVerplaatsingPoppetje();
 Poppetje		speler1;
 Poppetje		speler2;
 boolean			spelersZijnIngesteld;
+
+//===================Muren=========================
+void	maakOnbegaanbareMuren();
+void	DropBomb(int speler);
+
+
+//===================locatie====================
+int				locatieNummer=0;
+MI0283QT9		lcdGame;
+Location		locationsOfMap[192];
+
+
+//===================bom=====================
+int		 bomID;
+
 
 /*
 Een enum voor het helpen opslaan van de vorige locatie. Word gebruikt in de methode verplaatspoppetje en tekenverplaatsingpoppetje

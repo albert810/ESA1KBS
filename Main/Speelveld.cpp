@@ -104,6 +104,7 @@ void Speelveld::drawBegin()
 			//instellen dat je niet door de randen kunt voor de Y
 			if (this->locationsOfMap[i].YLocation == 1 || this->locationsOfMap[i].YLocation == 12 || this->locationsOfMap[i].YLocation == 11) {
 			this->locationsOfMap[i].nietBegaanBareLocatie = 1;
+			this->locationsOfMap[i].onverwoestbareLocatie = 1;
 			this->lcdGame.fillRect(x, y, 20, 20, RGB(50, 50, 50));
 			this->lcdGame.drawRect(x, y, 20, 20, 0);
 			}
@@ -117,12 +118,16 @@ void Speelveld::drawBegin()
 				this->lcdGame.fillRect(x, y, 20, 20, RGB(50, 50, 50));
 				this->lcdGame.drawRect(x, y, 20, 20, 0);
 				this->locationsOfMap[i].nietBegaanBareLocatie = 1;
+				this->locationsOfMap[i].onverwoestbareLocatie = 1;
+
 
 			}
 			if (this->locationsOfMap[i].XLocation == 15) {
 				this->lcdGame.fillRect(x, y, 20, 20, RGB(50, 50, 50));
 				this->lcdGame.drawRect(x, y, 20, 20, 0);
 				this->locationsOfMap[i].nietBegaanBareLocatie = 1;
+				this->locationsOfMap[i].onverwoestbareLocatie = 1;
+
 
 			}
 			
@@ -130,7 +135,7 @@ void Speelveld::drawBegin()
 		}
 		this->locatieNummer = 18;
 		this->bomID = 0;
-		this->maakMuren();
+		this->maakOnbegaanbareMuren();
 
 		this->spelersZijnIngesteld = 1;
 
@@ -219,7 +224,7 @@ void Speelveld::tekenVerplaatsingPoppetje()
 		
 }
 
-void Speelveld::maakMuren()
+void Speelveld::maakOnbegaanbareMuren()
 {
 	//Het maken van de map waarbij 
 
@@ -230,8 +235,9 @@ void Speelveld::maakMuren()
 	for (size_t i = 0; i < 15; i++)		// een rij blokken waar je niet doorheenkunt wordt aangemaakt
 	{
 		i++;
-
 		this->locationsOfMap[(i+(16*y))].nietBegaanBareLocatie = 1;
+		this->locationsOfMap[(i+(16*y))].onverwoestbareLocatie = 1;
+
 		this->lcdGame.fillRect((i * 20) - 20, ((y+1) * 20) - 20, 20, 20, RGB(50, 50, 50));
 		this->lcdGame.drawRect((i * 20) - 20, ((y+1) * 20) - 20, 20, 20, 0);
 

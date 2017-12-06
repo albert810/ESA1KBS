@@ -14,9 +14,10 @@ public:
 	uint8_t XLocation;
 	uint8_t YLocation;
 	Location();
-	void setLocationX(int x);
-	void setLocationY(int y);
+	void setLocationX(uint8_t x);
+	void setLocationY(uint8_t y);
 	boolean nietBegaanBareLocatie;
+	boolean onverwoestbareLocatie;
 
 	
 private:

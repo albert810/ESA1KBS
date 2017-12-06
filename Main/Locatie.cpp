@@ -11,12 +11,12 @@ Location::Location()
 //==================getters en setters================
 
 
-void Location::setLocationX(int x)
+void Location::setLocationX(uint8_t x)
 {
 	this->XLocation = x;
 }
 
-void Location::setLocationY(int y)
+void Location::setLocationY(uint8_t y)
 {
 	this->YLocation = y;
 }

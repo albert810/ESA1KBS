@@ -11,15 +11,17 @@ public:
 	void enableTimer1();
 	int* prepareDataCommands(int object);
 	void sendSingleData(int object);
+	void testPulses();
 	void initReceiver();
 	void readPulses();
+	void convertByte();
 	void printPulses();
 	void testVoorAlbert();
 	enum bitIdentity {
 
-		bitIsTrue = 100,
-		bitIsFalse = 200,
-		stopBit = 300
+		bitIsTrue = 300,
+		bitIsFalse = 100,
+		
 
 	};
 

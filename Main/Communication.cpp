@@ -7,11 +7,10 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <stdint.h>
-#include <wiring_private.h>
 
 #define IRONTVANGPIN      PINB
 #define IRPINNUM          0
-#define MAXONTV 600
+#define MAXONTV 2000
 
 uint16_t pulses[100][2];  // 2 array's voor hoge en lage pulsen 
 uint8_t currentpulse = 0; // houdt bij hoeveel pulsen er in 1 array zitten
@@ -31,10 +30,10 @@ void Communication::pulseIR(long microsecs)
 
 	while (microsecs > 0) {
 		// 38 kHz = 13 microseconds high and 13 microseconds low
-		PORTB |= (1 << PORTB3);       // high 3ms
-		delayMicroseconds(10);         // 10ms
-		PORTB &= ~(1 << PORTB3);           // low 3ms
-		delayMicroseconds(10);         // 10ms
+		PORTB |= (1 << PORTB3);       // high ~1ms
+		delayMicroseconds(10);         // 12ms
+		PORTB &= ~(1 << PORTB3);           // low ~1ms
+		delayMicroseconds(10);         // 12ms
 
 
 									   // so 26 microseconds altogether
@@ -42,7 +41,7 @@ void Communication::pulseIR(long microsecs)
 	}
 
 	sei();  // this turns them back on
-	
+
 }
 
 void Communication::enableTimer1()
@@ -66,11 +65,6 @@ void Communication::enableTimer1()
 
 	// enable global interrupts:
 	sei();
-	// set timer 1 prescale factor to 64
-	sbi(TCCR1B, CS10);
-	sbi(TCCR1B, CS12);
-	// put timer 1 in 8-bit phase correct pwm mode
-	sbi(TCCR1A, WGM10);
 
 }
 
@@ -78,47 +72,69 @@ int* Communication::prepareDataCommands(int object)
 {
 
 	//maak lege lijst en zorg er voor dat (voor het bericht) de bit op  0 staat dus op false
-	int *list= new int;
-	list[4] ;
+
+
+	int * list = new int;
+	list[4];
 	for (int i = 0; i <= 4; i++) {
 		list[i] = bitIsFalse;
 	}
-	
+
 
 	//Elke bit van het object bij langs gaan, als hij 1 is dan komt het getal 100
-	for (int i = 0; i <= 4; i++){
+	for (int i = 0; i <= 4; i++) {
 		if (object & (1 << i)) {
 			list[i] = bitIsTrue;
 		}
-		
+
 	}
-	
+
 	return list;
 
 }
 
 void Communication::sendSingleData(int object)
 {
-
-	int * listOfCommands=(int *)malloc(sizeof(listOfCommands)); 
-	listOfCommands = new int;
-	
-
-/*Er wordt een array van 4 groot gemaakt van tijdsintervallen die aangeven of een bit 1 of 0 is 
-1 = 100
-0 = 200
-*/
+	//als hij ooit een keer raar doet dan ligt het aan de malloc
+	//int * listOfCommands = new int;
+	int *listOfCommands = (int*)malloc(8 * sizeof(listOfCommands));
+	/*Er wordt een array van 5 groot gemaakt van tijdsintervallen die aangeven of een bit 1 of 0 is
+	1 = 300
+	0 = 100
+	*/
 	listOfCommands = this->prepareDataCommands(object);
 
 	//TODO:pulsen verzenden testen en timen 
+	//startbit
+	pulseIR(400);
+	delayMicroseconds(200);
+
 	for (int i = 0; i <= 4; i++) {
+		Serial.println(listOfCommands[i]);
 		pulseIR(listOfCommands[i]);
-		//Serial.println(listOfCommands[i]);
-		delayMicroseconds(200);
+		delayMicroseconds(100);
 	}
+	//stopbit
+	pulseIR(400);
 	free(listOfCommands);
-	
 }
+
+void Communication::testPulses() {
+	pulseIR(300);
+	delayMicroseconds(200);
+	pulseIR(100);
+	delayMicroseconds(200);
+	pulseIR(300);
+	delayMicroseconds(200);
+	pulseIR(100);
+	delayMicroseconds(200);
+	pulseIR(300);
+	Serial.println("pulse");
+
+
+
+}
+
 
 //=====================FUNCTIES ONTVANGER=======================================
 
@@ -128,20 +144,22 @@ void Communication::sendSingleData(int object)
 void Communication::readPulses() {
 
 
-	uint16_t highpulse, lowpulse;  // temporary storage timing
-	highpulse = lowpulse = 0; // start out with no pulse length
+	uint16_t highpulse, lowpulse, byteValue;  // tijdelijke opslag pulseduur en byte waarde
+	highpulse = lowpulse = 0; // begin bij nul
+
 
 	while (IRONTVANGPIN & (1 << IRPINNUM)) {
 		// pin is hoog
 		highpulse++;
-		
+
 
 		//wanneer tijd tussen pulsen langer is dan de maximale luistertijd(MAXONTV)
 		//print of verstuurt de ontvanger de array van de pulsen die wel ontvangen zijn
 		//vanaf dat moment is de array klaar en vormt een byte
 		//onderscheid tussen byte's wordt dus op deze manier bepaald
 		if ((highpulse >= MAXONTV) && (currentpulse != 0)) {
-			printPulses();
+			convertByte();
+			//printPulses();
 			currentpulse = 0;
 			return;
 		}
@@ -153,9 +171,10 @@ void Communication::readPulses() {
 	while (!(IRONTVANGPIN & _BV(IRPINNUM))) {
 		// pin is laag
 		lowpulse++;
-		
+
 		if ((lowpulse >= MAXONTV) && (currentpulse != 0)) {
-			printPulses();
+			convertByte();
+			//printPulses();
 			currentpulse = 0;
 			return;
 		}
@@ -163,30 +182,54 @@ void Communication::readPulses() {
 	pulses[currentpulse][1] = lowpulse;
 
 	// een hoog-laag puls gelezen, programma leest verder.
+
 	currentpulse++;
+
 }
 
+
+
+void Communication::convertByte() {
+	uint16_t factor, byteValue;
+	factor = 1; // byte komt achterstevoren binnen dus lezen begint bij de LSB
+	byteValue = 0; //tellen begint bij 0
+
+
+	for (uint8_t i = 1; i < 5; i++) {
+		if (pulses[i][1] > 350) {
+			byteValue += factor;
+			factor *= 2;
+		}
+		else {
+			factor *= 2;
+		}
+
+	}
+	Serial.print(byteValue);
+
+
+}
 //printfuncties voor de ontvangen byte's
 //alle pulsen hoger dan 500 worden 1
 //alles daaronder wordt een 0
 //500 omdat dit is wat binnenkomt als de verzender een 1(300) verstuurd
 //kan later gebruikt worden voor dataverwerking
 void Communication::printPulses(void) {
-	
+
 	for (uint8_t i = 0; i < currentpulse; i++) {
 
-		if(pulses[i][1] > 500 && pulses[i][1] < 600){
-		Serial.print("1");
+		//if(pulses[i][1] > 500 && pulses[i][1] < 600){
+		//Serial.print("1");
 
 
-		} else{
-		 Serial.print("0");
-		}
-		//Serial.print(pulses[i][1] );
-		//Serial.println(" usec");
-		
+		//} else{
+		//Serial.print("0");
+		//}
+		Serial.print(pulses[i][1]);
+		Serial.println(" usec");
 	}
+	//}
 	count++;
-	Serial.println("\nno");
+	//Serial.println("\nno");
 	Serial.println(count);
 }

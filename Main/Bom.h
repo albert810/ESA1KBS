@@ -9,7 +9,6 @@
 	#include "WProgram.h"
 #endif
 #include "Locatie.h"
-
 class Bom {
 
 public:
@@ -17,15 +16,12 @@ public:
 	Location locatieBom;
 	void setLocatieBom(Location locatie);
 	void bomProces();
-	void ontploffing();
+	//void tekenOntploffing(uint8_t xLocatie, uint8_t yLocatie, uint8_t range , MI0283QT9 lcd);
 	void tekenBom();
 	boolean bomStatus;
 	int aftellenTotExplosieBom;
 	int cooldownBom;
 	int bomID=0;
-
-
-
 
 
 

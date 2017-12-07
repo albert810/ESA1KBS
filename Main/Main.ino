@@ -37,6 +37,8 @@ main() {
 		if (h.speelveld.spelersZijnIngesteld) {
 			h.speelveld.verplaatsPoppetje();
 			h.speelveld.tekenVerplaatsingPoppetje();
+			h.speelveld.DropBomb(1);//checkt steeds of de bom is ingedrukt voor speler 1 vandaar die 1
+
 		}
 		
 	}
@@ -51,9 +53,7 @@ ISR(TIMER1_COMPA_vect)
 {
 	//bom 
 	if (h.speelveld.spelersZijnIngesteld) {	
-		h.speelveld.DropBomb(1);//checkt steeds of de bom is ingedrukt voor speler 1 vandaar die 1
-
-
+	
 	}
 	
 

@@ -44,12 +44,8 @@ void	DropBomb(int speler);
 int				locatieNummer=0;
 MI0283QT9		lcdGame;
 Location		locationsOfMap[192];
-
-
-//===================bom=====================
-int		 bomID;
-
-
+void			maakRandomMapEenMap();
+void			maakVerwoestbareMuur(uint8_t xLocatie, uint8_t yLocatie);
 /*
 Een enum voor het helpen opslaan van de vorige locatie. Word gebruikt in de methode verplaatspoppetje en tekenverplaatsingpoppetje
 */
@@ -57,12 +53,19 @@ enum locatiesVoorScherm
 {
 	omhoog = 0,
 	omlaag = 1,
-	links  = 2,
+	links = 2,
 	rechts = 3
 
 };
-int			vorigeLocatie;
 
+//===================bom=====================
+int			bomID;
+void		ontploffingBom(uint8_t xLocatie, uint8_t yLocatie);
+uint16_t	explosieGrootte;
+uint8_t		rangeBomb = 12;
+int			vorigeLocatie;
+void		tekenBom(uint8_t xLocatie, uint8_t yLocatie);
+void		tekenOntploffing(uint8_t xLocatie, uint8_t yLocatie);
 protected:
 private:
 

@@ -1,3 +1,4 @@
+#include "Speelveld.h"
 // 
 // 
 // 
@@ -136,7 +137,7 @@ void Speelveld::drawBegin()
 		this->locatieNummer = 18;
 		this->bomID = 0;
 		this->maakOnbegaanbareMuren();
-
+		this->maakVerwoestbareMuur(2,5);
 		this->spelersZijnIngesteld = 1;
 
 }
@@ -153,7 +154,7 @@ void Speelveld::verplaatsPoppetje()
 		else{
 			this->locatieNummer = locatieNummer - 16;
 			this->speler1.currentlocatie.YLocation--;
-		this->vorigeLocatie = omhoog;
+			this->vorigeLocatie = omhoog;
 		}
 	}
 	//omlaag
@@ -217,9 +218,16 @@ void Speelveld::tekenVerplaatsingPoppetje()
 	case rechts: x = ((this->speler1.currentlocatie.XLocation- 1) * 20) - 20;
 		break;
 	}
+	
+	
+		this->lcdGame.fillRect(x, y, 20, 20, RGB(0, 53, 0));//vorige locatie wegtekenen
+	
+	
 
-	this->lcdGame.fillRect(x, y, 20, 20, RGB(0, 53, 0));
 
+
+
+	
 	speler1.drawPoppetje(speler1.currentlocatie.XLocation, speler1.currentlocatie.YLocation);//huidige poppetje tekenen
 		
 }
@@ -249,41 +257,189 @@ void Speelveld::maakOnbegaanbareMuren()
 void Speelveld::DropBomb(int speler)
 {
 	//in de argument this->speler1.bom.cooldownBom>
+	
 
 	if (speler = 1) {
 
 		this->speler1.bom[1].cooldownBom++;
 
-		if (this->nunchuk.zButton && this->speler1.bom[1].cooldownBom > 50) {
+		if ((this->nunchuk.zButton && this->speler1.bom[1].cooldownBom > 10)&& bomID<3) {
 			this->speler1.bom[1].cooldownBom = 0;
-			if (bomID >= 2) { return; }//je kunt niet meer dan 2 bommen droppen
-			this->speler1.bom[1].tekenBom();
-			this->bomID++;//1
+			this->bomID++;//1+
+			this->speler1.bom[bomID].locatieBom = this->speler1.currentlocatie;
 			this->speler1.bom[bomID].bomStatus = 1;
 			Serial.println(bomID);
+		
 
-		}
-		if (this->speler1.bom[bomID].bomStatus) {
-			this->speler1.bom[bomID].aftellenTotExplosieBom++;
-		}
-		if (this->speler1.bom[bomID].aftellenTotExplosieBom > 180) {
-			this->speler1.bom[bomID].aftellenTotExplosieBom = 0;
-			this->speler1.bom[bomID].bomStatus = 0;
-			this->speler1.bom[bomID].ontploffing();
-			this->bomID--;
+			this->tekenBom(this->speler1.currentlocatie.XLocation, this->speler1.currentlocatie.YLocation);
 
 		}
 
+		if (this->speler1.bom[bomID].bomStatus == 1 )
+		{
+			this->tekenBom(this->speler1.bom[bomID].locatieBom.XLocation, this->speler1.bom[bomID].locatieBom.YLocation);
+		}
 
-
+		for (size_t i = 0; i < 3; i++)
+		{
+			if (this->speler1.bom[bomID - i].bomStatus) {
+				this->speler1.bom[bomID - i].aftellenTotExplosieBom++;
+			}
+		}
+		
+			if (this->speler1.bom[bomID].aftellenTotExplosieBom > 150) {
+				Serial.print("bom: gaat af:");
+				Serial.println(bomID);
+				this->speler1.bom[bomID].aftellenTotExplosieBom = 0;
+				this->speler1.bom[bomID].bomStatus = 0;
+				this->speler1.tekenOntploffing(this->speler1.bom[bomID].locatieBom.XLocation, this->speler1.bom[bomID].locatieBom.YLocation);
+				this->ontploffingBom(this->speler1.bom[bomID].locatieBom.XLocation, this->speler1.bom[bomID].locatieBom.YLocation);
+				this->bomID--;
+			}
 
 		//to do voor speler 2
-		else
-		{
-			//this->speler2.bom.tekenBom();
-			//this->speler2.bom.cooldownBom = 0;
-			//this->speler2.bom.bomStatus = 1;
-		}
+
 
 	}
 }
+
+void Speelveld::maakRandomMapEenMap()
+{
+}
+
+void Speelveld::maakVerwoestbareMuur(uint8_t xLocatie, uint8_t yLocatie)
+{
+	int locatieMap = ((yLocatie - 1) * 16)+ xLocatie;
+
+	//instellen in map dat er een muur is
+	this->locationsOfMap[locatieMap].nietBegaanBareLocatie = 1;
+
+	//tekenen op de map
+	int x = (xLocatie * 20) - 20;
+	int y = (yLocatie * 20) - 20;
+	this->lcdGame.drawRect(x, y, 20, 20, RGB(255, 248, 10));
+	this->lcdGame.fillRect(x, y, 20, 20, RGB(255, 248, 10));
+
+
+
+}
+
+void Speelveld::ontploffingBom(uint8_t xLocatie, uint8_t yLocatie)
+{	
+	int locatieIndex = ((yLocatie - 1) * 16) + xLocatie;
+	//wanneer een bom ontploft gaat hij (met rangebomb) bij langs hoe groot het bereik is, wanneer er iets geraakt heeft, gaat hij uit de for loop zodat niet meerdere muren kapot gaan)
+	
+	//=====explosieOmhoog=====
+	for (size_t i = 1; i < this->rangeBomb; i++)
+	{
+		tekenOntploffing(this->locationsOfMap[locatieIndex - 16 * i].XLocation, this->locationsOfMap[locatieIndex - 16 * i].YLocation+1);//teken de ontploffing
+		//wanneer de  locatie omhoog een nietkapotbare te maken locatie is dan stopt de ontploffing
+		if (this->locationsOfMap[locatieIndex - 16 * i].onverwoestbareLocatie) {
+			i = rangeBomb + 1;//stop de explosie
+		}
+		else
+		{
+			//wanneer de  locatie omhoog kapot kan, dan gaat hij kapot en stopt de explosie
+			if (this->locationsOfMap[locatieIndex - 16 * i].nietBegaanBareLocatie) {
+				this->locationsOfMap[locatieIndex - 16 * i].nietBegaanBareLocatie = 0;
+				i = rangeBomb + 1;//stop de explosie
+			}
+		}
+
+	}
+
+	//=====explosieOmlaag======
+		for (size_t i = 1; i < this->rangeBomb; i++)
+		{
+			tekenOntploffing(this->locationsOfMap[locatieIndex + 16 * i].XLocation, this->locationsOfMap[locatieIndex + 16 * i].YLocation - 1);//teken de ontploffing
+			//wanneer de  locatie omlaag een nietkapotbare te maken locatie is dan stopt de ontploffing
+			if (this->locationsOfMap[locatieIndex + 16 * i].onverwoestbareLocatie) {
+				i = rangeBomb + 1;//stop de explosie
+			}
+			else
+			{
+				//wanneer de  locatie omlaag kapot kan, dan gaat hij kapot en stopt de explosie
+				if (this->locationsOfMap[locatieIndex + 16 * i].nietBegaanBareLocatie) {
+					this->locationsOfMap[locatieIndex + 16 * i].nietBegaanBareLocatie = 0;
+					i = rangeBomb + 1;//stop de explosie
+				}
+			}
+		
+		}
+	
+		
+		//=======explosieRechts======
+		for (size_t i = 1; i < this->rangeBomb; i++)
+		{
+			tekenOntploffing(this->locationsOfMap[locatieIndex + 1 * i].XLocation-1, this->locationsOfMap[locatieIndex + 1 * i].YLocation);//teken de ontploffing
+			//wanneer de rechter locatie een nietkapotbare te maken locatie is dan stopt de ontploffing
+			if (this->locationsOfMap[locatieIndex + 1 * i].onverwoestbareLocatie) {
+						i = rangeBomb + 1;//stop de explosie
+			}
+
+			else
+			{
+				//wanneer de rechter locatie kapot kan, dan gaat hij kapot en stopt de explosie
+				if (this->locationsOfMap[locatieIndex + 1 * i].nietBegaanBareLocatie) {
+					this->locationsOfMap[locatieIndex + 1 * i].nietBegaanBareLocatie = 0;
+					i = rangeBomb + 1;//de explosie stopt
+				}
+			}
+		
+
+		}
+
+
+
+		//========explosieLinks=======
+		for (size_t i = 1; i < this->rangeBomb; i++) {
+			
+			tekenOntploffing(this->locationsOfMap[locatieIndex - 1 * i].XLocation + 1, this->locationsOfMap[locatieIndex - 1 * i].YLocation);//teken de ontploffing
+
+			//wanneer de linker locatie een nietkapotbare te maken locatie is dan stopt de ontploffing
+			if (this->locationsOfMap[locatieIndex - 1 * i].onverwoestbareLocatie) {
+				i = rangeBomb + 1;//stop de explosie
+			}
+			else
+			{
+			//wanneer de linker locatie kapot kan, dan gaat hij kapot en stopt de explosie
+				if (this->locationsOfMap[locatieIndex - 1 * i].nietBegaanBareLocatie) {
+					this->locationsOfMap[locatieIndex - 1 * i].nietBegaanBareLocatie = 0;
+					i = rangeBomb + 1;//stop de explosie
+				}
+			}
+		}
+
+
+	
+}
+
+void Speelveld::tekenBom(uint8_t xLocatie, uint8_t yLocatie)
+{
+	int x;
+	int y;
+	
+		x = (xLocatie * 20) - 10;
+		y = (yLocatie * 20) - 10;
+	
+	 
+
+	this->lcdGame.drawCircle(x, y, 5, 20);
+	this->lcdGame.fillCircle(x, y, 5, 20);
+}
+
+void Speelveld::tekenOntploffing(uint8_t xLocatie, uint8_t yLocatie)
+{
+	int x;
+	int y;
+
+	x = (xLocatie * 20) - 20;
+	y = (yLocatie * 20) - 20;
+
+
+	this->lcdGame.drawRect(x, y, 20, 20, RGB(255, 10, 10));
+	this->lcdGame.fillRect(x, y, 20, 20, RGB(255, 10, 10));
+
+}
+
+

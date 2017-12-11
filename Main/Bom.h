@@ -22,7 +22,9 @@ public:
 	int aftellenTotExplosieBom;
 	int cooldownBom;
 	int bomID=0;
-
+	
+	boolean schadeOpruimen;
+	int	opruimenBomTijd;
 
 
 

@@ -66,6 +66,8 @@ uint8_t		rangeBomb = 12;
 int			vorigeLocatie;
 void		tekenBom(uint8_t xLocatie, uint8_t yLocatie);
 void		tekenOntploffing(uint8_t xLocatie, uint8_t yLocatie);
+void		bomOpruimen(uint8_t xLocatie, uint8_t yLocatie);
+void		tekenOpruiming(uint8_t xLocatie, uint8_t yLocatie);
 protected:
 private:
 

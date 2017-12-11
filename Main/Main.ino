@@ -24,7 +24,7 @@ int counter = 0;
 main() {
 	init();
 	Serial.begin(9600);
-	c.enableTimer1();
+	//c.enableTimer1();
 
 	h.setPageState(pagestate);
 	h.hoofdmenusetup();

@@ -11,7 +11,7 @@
 #else
 #include "WProgram.h"
 #endif
-#include "speelveld.h"
+#include "LevelMenu.h"
 class hoofdmenuu {
 
 public:
@@ -21,14 +21,14 @@ public:
 	void welkebutton();
 	void hoofdmenuloop();
 	void hoofdmenusetup();
-	Speelveld speelveld = Speelveld();
 	ArduinoNunchuk nunchuk = ArduinoNunchuk();
 	void setPageState(PageState Currentpage);
 	PageState pageState;
-protected:
+	LevelMenu levelmenu;
+	MI0283QT9 lcd; //I2C (GLCD-Shield or MI0283QT Adapter v2
 private:
 	int buttoncount = 1;
-	MI0283QT9 lcd; //I2C (GLCD-Shield or MI0283QT Adapter v2
+	
 };
 
 

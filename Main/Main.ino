@@ -4,6 +4,8 @@ Created:	11/16/2017 1:22:40 PM
 Author:	Albert
 */
 
+#include <MI0283QT9.h>
+#include "LevelMenu.h"
 #include "Bom.h"
 #include "PageState.h"
 #include "Poppetje.h"
@@ -28,19 +30,23 @@ main() {
 
 	h.setPageState(pagestate);
 	h.hoofdmenusetup();
-	
+
 	while (1)
-	{	
-		if (h.pageState.hoofdmenu) 
+	{
+		if (h.pageState.hoofdmenu)
 			h.hoofdmenuloop();
 
-		if (h.speelveld.spelersZijnIngesteld) {
-			h.speelveld.verplaatsPoppetje();
-			h.speelveld.tekenVerplaatsingPoppetje();
-			h.speelveld.DropBomb(1);//checkt steeds of de bom is ingedrukt voor speler 1 vandaar die 1
+		if (h.levelmenu.pageState.levelmenu) {
+			h.levelmenu.levelloop(h.lcd, h.nunchuk);
+		}
+
+		if (h.levelmenu.speelveld.spelersZijnIngesteld) {
+			h.levelmenu.speelveld.verplaatsPoppetje();
+			h.levelmenu.speelveld.tekenVerplaatsingPoppetje();
+			h.levelmenu.speelveld.DropBomb(1);//checkt steeds of de bom is ingedrukt voor speler 1 vandaar die 1
 
 		}
-		
+
 	}
 }
 
@@ -52,10 +58,8 @@ main() {
 ISR(TIMER1_COMPA_vect)
 {
 	//bom 
-	if (h.speelveld.spelersZijnIngesteld) {	
 	
-	}
-	
+
 
 
 

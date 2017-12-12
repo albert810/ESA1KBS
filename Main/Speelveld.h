@@ -22,7 +22,7 @@ public:
 void			constructorAlternatief(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y);
 void			setLCD(MI0283QT9 lcd);
 void			setNunchuck(ArduinoNunchuk nunchuck);
-void			SetupSpeelveld(MI0283QT9 lcd, ArduinoNunchuk nunchuck);
+void			SetupSpeelveld(MI0283QT9 lcd, ArduinoNunchuk nunchuck, uint8_t level);
 void			drawBegin();
 
 ArduinoNunchuk	nunchuk;
@@ -46,6 +46,7 @@ MI0283QT9		lcdGame;
 Location		locationsOfMap[192];
 void			maakRandomMapEenMap();
 void			maakVerwoestbareMuur(uint8_t xLocatie, uint8_t yLocatie);
+void			maakLevel(uint8_t level);
 /*
 Een enum voor het helpen opslaan van de vorige locatie. Word gebruikt in de methode verplaatspoppetje en tekenverplaatsingpoppetje
 */

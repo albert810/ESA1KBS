@@ -50,11 +50,12 @@ void Speelveld::setNunchuck(ArduinoNunchuk nunchuk)
 	this->nunchuk = nunchuk;
 }
 
-void Speelveld::SetupSpeelveld(MI0283QT9 lcd, ArduinoNunchuk nunchuck)
+void Speelveld::SetupSpeelveld(MI0283QT9 lcd, ArduinoNunchuk nunchuck, uint8_t level)
 {
 	this->setLCD(lcd);
 	this->setNunchuck(nunchuck);
 	drawBegin();
+	maakLevel(level);
 
 
 }
@@ -137,7 +138,7 @@ void Speelveld::drawBegin()
 		this->locatieNummer = 18;
 		this->bomID = 0;
 		this->maakOnbegaanbareMuren();
-		this->maakVerwoestbareMuur(2,5);
+		this->maakVerwoestbareMuur(8,6);
 		this->spelersZijnIngesteld = 1;
 
 }
@@ -336,6 +337,37 @@ void Speelveld::maakVerwoestbareMuur(uint8_t xLocatie, uint8_t yLocatie)
 
 
 
+}
+
+void Speelveld::maakLevel(uint8_t level)
+{
+	switch (level)
+	{
+	case 1:	
+		//level 1 maakt een kruis
+		uint8_t i;
+		//horizontaal maken
+		while ( i !=13)
+		{
+			maakVerwoestbareMuur(2 + i, 6);
+			i++;
+		}
+		i = 0;
+
+		//verticaal maken
+		while (i != 9)
+		{
+			maakVerwoestbareMuur(8, 2+i);
+			i++;
+		}
+		i = 0;		
+		break;
+
+	case 2:
+
+	default:
+		break;
+	}
 }
 
 void Speelveld::ontploffingBom(uint8_t xLocatie, uint8_t yLocatie)

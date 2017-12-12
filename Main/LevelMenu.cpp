@@ -125,7 +125,7 @@ void LevelMenu::levelloop(MI0283QT9 lcd, ArduinoNunchuk nunchuk)
 			//start level 1
 			this->pageState.setLevelmenu(false);
 			this->speelveld.constructorAlternatief(2, 2, 15, 15);
-			this->speelveld.SetupSpeelveld(lcd, nunchuk);
+			this->speelveld.SetupSpeelveld(lcd, nunchuk, level1);
 			break;
 		case level2:
 			//start level 2

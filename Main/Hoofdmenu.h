@@ -29,6 +29,12 @@ public:
 private:
 	int buttoncount = 1;
 	
+	enum nunchuckDirection
+	{
+		naarBovenGrens=137,
+		naarOnderGrens=125
+	};
+
 };
 
 

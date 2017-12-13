@@ -15,13 +15,7 @@ void Bom::setLocatieBom(Location locatie)
 	this->locatieBom = locatie;
 }
 
-void Bom::bomProces()
-{
-	this->tekenBom();
-	this->cooldownBom = 0;
-	//this->bomStatus = 1;
-	
-}
+
 
 /*void Bom::tekenOntploffing(uint8_t xLocatie, uint8_t yLocatie, uint8_t range, MI0283QT9 lcd)
 {
@@ -40,5 +34,4 @@ void Bom::bomProces()
 
 void Bom::tekenBom()
 {
-	Serial.println("bom is gedropt");
 }

@@ -7,17 +7,11 @@
 void Poppetje::tekenOntploffing(int xLocatie, int yLocatie)
 {
 
-	Serial.println(xLocatie);
-	Serial.println(yLocatie);
+
 	int x = (xLocatie * 20) - 20;
 	int y = (yLocatie * 20) - 20;
 	lcd.fillRect(x, y, 20, 20, RGB(10, 10, 10));
 	lcd.drawRect(x, y, 20, 20, 0);
-
-
-
-	Serial.println("BOOOOOOEEMMMMM");
-
 }
 
 Poppetje::Poppetje()

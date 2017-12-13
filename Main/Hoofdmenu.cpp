@@ -47,6 +47,7 @@ void hoofdmenuu::welkebutton()
 		buttonstart(0);
 		buttonscores(1);
 	}
+
 	if (nunchuk.analogY > 155) {
 		buttoncount--;
 	}
@@ -64,7 +65,7 @@ void hoofdmenuu::welkebutton()
 void hoofdmenuu::hoofdmenuloop()
 {
 	nunchuk.update();
-	while (nunchuk.analogY < 125 || nunchuk.analogY > 137) {
+	while (nunchuk.analogY < naarOnderGrens || nunchuk.analogY > naarBovenGrens) {
 		welkebutton();
 	}
 	if (nunchuk.cButton) {

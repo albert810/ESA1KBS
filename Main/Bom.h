@@ -15,16 +15,20 @@ public:
 	Bom();
 	Location locatieBom;
 	void setLocatieBom(Location locatie);
-	void bomProces();
-	//void tekenOntploffing(uint8_t xLocatie, uint8_t yLocatie, uint8_t range , MI0283QT9 lcd);
 	void tekenBom();
+
+	//bepaalde statussen van de bom
+	boolean schadeOpruimen;
 	boolean bomStatus;
-	int aftellenTotExplosieBom;
-	int cooldownBom;
+	
+	//Het id van de bom,  voor het bijhouden van welke bom er ook af moet gaan
 	int bomID=0;
 	
-	boolean schadeOpruimen;
+	//timers voor de bom
+	int cooldownBom;
+	int aftellenTotExplosieBom;
 	int	opruimenBomTijd;
+
 
 
 

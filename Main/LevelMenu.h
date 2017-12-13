@@ -15,11 +15,13 @@
 
 class LevelMenu {
 public:
-	int test=2;
+
+	//buttons tekenen
 	void button1( MI0283QT9 lcd);
 	void button2( MI0283QT9 lcd);
 	void button3(MI0283QT9 lcd);
 	void button4(MI0283QT9 lcd);
+
 	void levelsetup(MI0283QT9 lcd, ArduinoNunchuk nunchuk);
 	void levelloop(MI0283QT9 lcd, ArduinoNunchuk nunchuk);
 	void welkelevel(MI0283QT9 lcd, ArduinoNunchuk nunchuk);
@@ -33,6 +35,13 @@ public:
 		level2 = 2,
 		level3 = 3,
 		randomMap = 4
+	};
+
+	enum nunchuckDirections
+	{
+		naarOnderGrensNunchuck= 125,
+		naarBovenGrensNunchuck=137
+
 	};
 	
 };

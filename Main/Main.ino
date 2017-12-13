@@ -4,6 +4,7 @@ Created:	11/16/2017 1:22:40 PM
 Author:	Albert
 */
 
+#include "Helderheid.h"
 #include <MI0283QT9.h>
 #include "LevelMenu.h"
 #include "Bom.h"

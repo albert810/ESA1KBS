@@ -71,6 +71,7 @@ enum locatiesVoorScherm
 //===================bom=====================
 int			bomID;
 void		ontploffingBom(uint8_t xLocatie, uint8_t yLocatie);
+void		ontploffingBomVanLijn(char as, uint8_t xLocatie, uint8_t yLocatie);
 uint16_t	explosieGrootte;
 uint8_t		rangeBomb = 12;
 int			vorigelocatieSpeler1;
@@ -79,6 +80,16 @@ void		tekenBom(uint8_t xLocatie, uint8_t yLocatie);
 void		tekenOntploffing(uint8_t xLocatie, uint8_t yLocatie);
 void		bomOpruimen(uint8_t xLocatie, uint8_t yLocatie);
 void		tekenOpruiming(uint8_t xLocatie, uint8_t yLocatie);
+
+//om aan te geven welke as de bom van de lijn is. Wordt gebruikt van welke kant van de X as
+//Het is gebasseerd op "WASD" voor het geval je je afvraagt waarom deze waardes.
+enum bomLijnAs
+{
+	xAsRechts = 'd',
+	xAsLinks = 'a',
+	yAsBoven = 'w',
+	yAsOnder = 's'
+};
 protected:
 private:
 

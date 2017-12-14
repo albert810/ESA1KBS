@@ -431,98 +431,75 @@ int Speelveld::vanXenYNaarLocatieNummer(int x, int y)
 
 void Speelveld::ontploffingBom(uint8_t xLocatie, uint8_t yLocatie)
 {	
-	int locatieIndex = ((yLocatie - 1) * 16) + xLocatie;
-	//wanneer een bom ontploft gaat hij (met rangebomb) bij langs hoe groot het bereik is, wanneer er iets geraakt heeft, gaat hij uit de for loop zodat niet meerdere muren kapot gaan)
+	ontploffingBomVanLijn(xAsLinks, xLocatie, yLocatie);
+	ontploffingBomVanLijn(xAsRechts, xLocatie, yLocatie);
+	ontploffingBomVanLijn(yAsBoven, xLocatie, yLocatie);
+	ontploffingBomVanLijn(yAsOnder, xLocatie, yLocatie);	
+}
+
+void Speelveld::ontploffingBomVanLijn(char as, uint8_t xLocatie, uint8_t yLocatie)
+{
+	int locatieIndex = ((yLocatie - 1) * 16) + xLocatie;//de index die aangeeft welke locatie het is van de x en y waarde
+	int locatieCounter;	//om aan te geven welke kant de locatie op gaat
+	int yAsMin=-1;
+/*	*Wanneer  een locatie naar rechts gaat dan gaat de waarde +1 dus gewoon 1
+	*Wanneer  een locatie naar rechts gaat dan gaat de waarde -1 dus gewoon -1
+	*Wanneer  een locatie naar boven gaat dan gaat de waarde +16 dus gewoon 16
+	*Wanneer  een locatie naar rechts gaat dan gaat de waarde -16 dus gewoon 16
+
+*/	
+
+	switch (as)
+	{
+	case xAsRechts:
+		locatieCounter = 1;
+		
+		break;
+	case xAsLinks:
+		locatieCounter = -1;
+			break;
+	case yAsBoven:
+		locatieCounter = -16;
+		yAsMin = 1;
+				break;
+	case yAsOnder:
+		locatieCounter = 16;
+
+	default:
+		break;
+	}
+
 	
-	//=====explosieOmhoog=====
 	for (size_t i = 1; i < this->rangeBomb; i++)
 	{
-		tekenOntploffing(this->locationsOfMap[locatieIndex - 16 * i].XLocation, this->locationsOfMap[locatieIndex - 16 * i].YLocation+1);//teken de ontploffing
-		//wanneer de  locatie omhoog een nietkapotbare te maken locatie is dan stopt de ontploffing
-		if (this->locationsOfMap[locatieIndex - 16 * i].onverwoestbareLocatie) {
-			i = rangeBomb + 1;//stop de explosie
+		if (as ==xAsLinks || as == xAsRechts)
+		{
+			tekenOntploffing(this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation - locatieCounter, this->locationsOfMap[locatieIndex + locatieCounter * i].YLocation);//teken de ontploffing
+
 		}
 		else
 		{
-			//wanneer de  locatie omhoog kapot kan, dan gaat hij kapot en stopt de explosie
-			if (this->locationsOfMap[locatieIndex - 16 * i].nietBegaanBareLocatie) {
-				this->locationsOfMap[locatieIndex - 16 * i].nietBegaanBareLocatie = 0;
-				tekenOntploffing(this->locationsOfMap[locatieIndex - 16 * i].XLocation, this->locationsOfMap[locatieIndex - 16 * i].YLocation);
-				i = rangeBomb + 1;//stop de explosie
-			}
+			Serial.println(locatieCounter);
+			Serial.println(this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation, this->locationsOfMap[locatieIndex + locatieCounter * i].YLocation - locatieCounter);
+			tekenOntploffing(this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation, this->locationsOfMap[locatieIndex + locatieCounter * i].YLocation + yAsMin);//teken de ontploffing
+
+		}
+																																		 //wanneer de rechter locatie een nietkapotbare te maken locatie is dan stopt de ontploffing
+		if (this->locationsOfMap[locatieIndex + locatieCounter * i].onverwoestbareLocatie) {
+			i = rangeBomb + 1;//stop de explosie
 		}
 
+		else
+		{
+			//wanneer de rechter locatie kapot kan, dan gaat hij kapot en stopt de explosie
+			if (this->locationsOfMap[locatieIndex + locatieCounter * i].nietBegaanBareLocatie) {
+				this->locationsOfMap[locatieIndex + locatieCounter * i].nietBegaanBareLocatie = 0;
+		//		tekenOntploffing(this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation, this->locationsOfMap[locatieIndex + locatieCounter * i].YLocation);
+				i = rangeBomb + 1;//de explosie stopt
+
+			}
+		}
 	}
-
-	//=====explosieOmlaag======
-		for (size_t i = 1; i < this->rangeBomb; i++)
-		{
-			tekenOntploffing(this->locationsOfMap[locatieIndex + 16 * i].XLocation, this->locationsOfMap[locatieIndex + 16 * i].YLocation - 1);//teken de ontploffing
-			//wanneer de  locatie omlaag een nietkapotbare te maken locatie is dan stopt de ontploffing
-			if (this->locationsOfMap[locatieIndex + 16 * i].onverwoestbareLocatie) {
-				i = rangeBomb + 1;//stop de explosie
-			}
-			else
-			{
-				//wanneer de  locatie omlaag kapot kan, dan gaat hij kapot en stopt de explosie
-				if (this->locationsOfMap[locatieIndex + 16 * i].nietBegaanBareLocatie) {
-					this->locationsOfMap[locatieIndex + 16 * i].nietBegaanBareLocatie = 0;
-					tekenOntploffing(this->locationsOfMap[locatieIndex + 16 * i].XLocation, this->locationsOfMap[locatieIndex + 16 * i].YLocation);
-					i = rangeBomb + 1;//stop de explosie
-
-				}
-			}
-		
-		}
-	
-		
-		//=======explosieRechts======
-		for (size_t i = 1; i < this->rangeBomb; i++)
-		{
-			tekenOntploffing(this->locationsOfMap[locatieIndex + 1 * i].XLocation-1, this->locationsOfMap[locatieIndex + 1 * i].YLocation);//teken de ontploffing
-			//wanneer de rechter locatie een nietkapotbare te maken locatie is dan stopt de ontploffing
-			if (this->locationsOfMap[locatieIndex + 1 * i].onverwoestbareLocatie) {
-						i = rangeBomb + 1;//stop de explosie
-			}
-
-			else
-			{
-				//wanneer de rechter locatie kapot kan, dan gaat hij kapot en stopt de explosie
-				if (this->locationsOfMap[locatieIndex + 1 * i].nietBegaanBareLocatie) {
-					this->locationsOfMap[locatieIndex + 1 * i].nietBegaanBareLocatie = 0;
-					tekenOntploffing(this->locationsOfMap[locatieIndex + 1 * i].XLocation, this->locationsOfMap[locatieIndex + 1 * i].YLocation);
-					i = rangeBomb + 1;//de explosie stopt
-
-				}
-			}
-		
-
-		}
-
-
-
-		//========explosieLinks=======
-		for (size_t i = 1; i < this->rangeBomb; i++) {
-			
-			tekenOntploffing(this->locationsOfMap[locatieIndex - 1 * i].XLocation + 1, this->locationsOfMap[locatieIndex - 1 * i].YLocation);//teken de ontploffing
-
-			//wanneer de linker locatie een nietkapotbare te maken locatie is dan stopt de ontploffing
-			if (this->locationsOfMap[locatieIndex - 1 * i].onverwoestbareLocatie) {
-				i = rangeBomb + 1;//stop de explosie
-			}
-			else
-			{
-			//wanneer de linker locatie kapot kan, dan gaat hij kapot en stopt de explosie
-				if (this->locationsOfMap[locatieIndex - 1 * i].nietBegaanBareLocatie) {
-					this->locationsOfMap[locatieIndex - 1 * i].nietBegaanBareLocatie = 0;
-					tekenOntploffing(this->locationsOfMap[locatieIndex - 1 * i].XLocation, this->locationsOfMap[locatieIndex - 1 * i].YLocation);
-					i = rangeBomb + 1;//stop de explosie
-				}
-			}
-		}
-
-
-	
 }
 
 void Speelveld::tekenBom(uint8_t xLocatie, uint8_t yLocatie)
@@ -532,11 +509,11 @@ void Speelveld::tekenBom(uint8_t xLocatie, uint8_t yLocatie)
 	
 		x = (xLocatie * 20) - 10;
 		y = (yLocatie * 20) - 10;
-	
-	 
 
-	this->lcdGame.drawCircle(x, y, 5, 20);
-	this->lcdGame.fillCircle(x, y, 5, 20);
+		this->lcdGame.drawCircle(x, y, 5, 0);
+		this->lcdGame.fillCircle(x, y, 5, 0);
+		this->lcdGame.fillRect(x + 4, y - 5, 3, 3, 0);
+		this->lcdGame.fillRect(x + 5, y - 7, 3, 3, RGB(229, 12, 13));
 }
 
 void Speelveld::tekenOntploffing(uint8_t xLocatie, uint8_t yLocatie)

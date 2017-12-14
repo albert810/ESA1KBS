@@ -441,7 +441,7 @@ void Speelveld::ontploffingBomVanLijn(char as, uint8_t xLocatie, uint8_t yLocati
 {
 	int locatieIndex = ((yLocatie - 1) * 16) + xLocatie;//de index die aangeeft welke locatie het is van de x en y waarde
 	int locatieCounter;	//om aan te geven welke kant de locatie op gaat
-	int yAsMin=-1;
+	int yAsMin=-1;		//oor de y as wanneer
 /*	*Wanneer  een locatie naar rechts gaat dan gaat de waarde +1 dus gewoon 1
 	*Wanneer  een locatie naar rechts gaat dan gaat de waarde -1 dus gewoon -1
 	*Wanneer  een locatie naar boven gaat dan gaat de waarde +16 dus gewoon 16
@@ -472,15 +472,30 @@ void Speelveld::ontploffingBomVanLijn(char as, uint8_t xLocatie, uint8_t yLocati
 	
 	for (size_t i = 1; i < this->rangeBomb; i++)
 	{
+		if (this->speler1.currentlocatie.XLocation == this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation && this->speler1.currentlocatie.YLocation== this->locationsOfMap[locatieIndex + locatieCounter * i].YLocation)
+		{
+			Serial.println("speler locatie:");
+			Serial.print(this->speler1.currentlocatie.XLocation);
+			Serial.print("map locatie:");
+			Serial.println(this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation);
+			Serial.println("ik be dood");
+		}
+		if (this->speler2.currentlocatie.XLocation == this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation && this->speler2.currentlocatie.YLocation == this->locationsOfMap[locatieIndex + locatieCounter * i].YLocation)
+		{
+			Serial.println("speler locatie:");
+			Serial.print(this->speler2.currentlocatie.XLocation);
+			Serial.print("map locatie:");
+			Serial.println(this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation);
+			Serial.println("ik be dood 2");
+		}
+
 		if (as ==xAsLinks || as == xAsRechts)
 		{
 			tekenOntploffing(this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation - locatieCounter, this->locationsOfMap[locatieIndex + locatieCounter * i].YLocation);//teken de ontploffing
-
+		
 		}
 		else
 		{
-			Serial.println(locatieCounter);
-			Serial.println(this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation, this->locationsOfMap[locatieIndex + locatieCounter * i].YLocation - locatieCounter);
 			tekenOntploffing(this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation, this->locationsOfMap[locatieIndex + locatieCounter * i].YLocation + yAsMin);//teken de ontploffing
 
 		}

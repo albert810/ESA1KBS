@@ -1,7 +1,8 @@
 // hoofdmenu.h
 #include <ArduinoNunchuk.h>
 #include <MI0283QT9.h>
-
+#include "LevelMenu.h"
+#include "Helderheid.h"
 
 #ifndef _HOOFDMENUU_h
 #define _HOOFDMENUU_h
@@ -11,7 +12,7 @@
 #else
 #include "WProgram.h"
 #endif
-#include "LevelMenu.h"
+
 class hoofdmenuu {
 
 public:
@@ -25,6 +26,7 @@ public:
 	void setPageState(PageState Currentpage);
 	PageState pageState;
 	LevelMenu levelmenu;
+	uint16_t potwaarde = 100;	
 	MI0283QT9 lcd; //I2C (GLCD-Shield or MI0283QT Adapter v2
 private:
 	int buttoncount = 1;

@@ -30,7 +30,7 @@ void hoofdmenuu::buttonscores(int ingedrukt2)
 		lcd.drawRect(57, 162, 206, 56, RGB(120, 120, 120));
 		lcd.fillRect(60, 165, 200, 50, RGB(178, 34, 34));
 		lcd.drawRect(60, 165, 200, 50, RGB(0, 0, 0));
-		lcd.drawText(81, 183, "Highscores", RGB(0, 0, 0), RGB(178, 34, 34), 2);
+		lcd.drawText(83, 183, "Highscores", RGB(0, 0, 0), RGB(178, 34, 34), 2);
 	
 	if (ingedrukt2 == 1) {
 		lcd.drawRect(57, 162, 206, 56, RGB(0, 0, 0));
@@ -64,6 +64,7 @@ void hoofdmenuu::welkebutton()
 
 void hoofdmenuu::hoofdmenuloop()
 {
+	
 	nunchuk.update();
 	while (nunchuk.analogY < naarOnderGrens || nunchuk.analogY > naarBovenGrens) {
 		welkebutton();
@@ -79,12 +80,28 @@ void hoofdmenuu::hoofdmenuloop()
 		}
 		else if (buttoncount == 2) {
 			//verwijst door als button 2 met button c ingedrukt word
-			lcd.fillScreen(RGB(200, 200, 200));
+			
 		}
 		if (nunchuk.zButton) {
 			hoofdmenusetup();
 		}
 	}
+	//helderheid scherm
+	//zet de input pin op A0
+	ADMUX = 0;
+	//5 volt
+	ADMUX |= (1 << REFS0);
+	//clock 128
+	ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
+	//adc aanzetten
+	ADCSRA |= (1 << ADEN);
+	//start
+	ADCSRA |= (1 << ADSC);
+	//wachten
+	while (ADCSRA & (1 << ADSC))
+		;
+	potwaarde = ADC / 10;
+	lcd.led(potwaarde);	
 	nunchuk.cButton = false;
 }
 

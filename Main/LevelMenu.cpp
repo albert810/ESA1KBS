@@ -53,6 +53,7 @@ void LevelMenu::levelsetup(MI0283QT9 lcd, ArduinoNunchuk nunchuk)
 
 void LevelMenu::levelloop(MI0283QT9 lcd, ArduinoNunchuk nunchuk)
 {
+	
 	nunchuk.update();
 	while (nunchuk.analogY < naarOnderGrensNunchuck || nunchuk.analogY > naarBovenGrensNunchuck) {
 		//nunchuck naar onder

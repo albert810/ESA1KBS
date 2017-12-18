@@ -24,7 +24,7 @@ public:
 	void levelsetup(MI0283QT9 lcd, ArduinoNunchuk nunchuk);
 	void levelloop(MI0283QT9 lcd, ArduinoNunchuk nunchuk);
 	void welkelevel(MI0283QT9 lcd, ArduinoNunchuk nunchuk);
-	int tekstdraaigetal = 150;
+	int tekstdraaigetal2 = 150;
 	int levelcount = 1;
 	Speelveld speelveld = Speelveld();
 	void setPageState(PageState Currentpage);

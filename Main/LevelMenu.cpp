@@ -52,8 +52,6 @@ void LevelMenu::levelsetup(MI0283QT9 lcd, ArduinoNunchuk nunchuk)
 
 void LevelMenu::levelloop(MI0283QT9 lcd, ArduinoNunchuk nunchuk)
 {
-	lcd.drawText(tekstdraaigetal, 230, "Druk de zButton in om te selecteren", RGB(0, 0, 0), RGB(120, 120, 120), 1);
-	tekstdraaigetal--;
 	nunchuk.update();
 	while (nunchuk.analogY < naarOnderGrensNunchuck || nunchuk.analogY > naarBovenGrensNunchuck) {
 		//nunchuck naar onder
@@ -116,6 +114,7 @@ void LevelMenu::levelloop(MI0283QT9 lcd, ArduinoNunchuk nunchuk)
 		default:
 			break;
 		}
+		
 	}
 	
 //controlleer of er iets is ingedrukt

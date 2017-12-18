@@ -63,8 +63,9 @@ void hoofdmenuu::welkebutton()
 }
 
 void hoofdmenuu::hoofdmenuloop()
-{
-	
+{		
+	lcd.drawText(tekstdraaigetal, 230, "Draai de potentiometer om de helderheid in te stellen", RGB(0, 0, 0), RGB(120, 120, 120), 1);
+	tekstdraaigetal--;
 	nunchuk.update();
 	while (nunchuk.analogY < naarOnderGrens || nunchuk.analogY > naarBovenGrens) {
 		welkebutton();
@@ -114,6 +115,7 @@ void hoofdmenuu::hoofdmenusetup()
 	lcd.fillScreen(RGB(120, 120, 120));
 	//draw the bombermanname
 	lcd.drawText(20, 40, "Bomberman", RGB(0, 0, 0), RGB(120, 120, 120), 4);
+	
 	nunchuk.init();
 	welkebutton();
 }

@@ -38,8 +38,7 @@ void LevelMenu::button4(MI0283QT9 lcd)
 }
 
 void LevelMenu::levelsetup(MI0283QT9 lcd, ArduinoNunchuk nunchuk)
-{
-	
+{	
 	this->pageState.levelmenu = true;
 	//make the screen grey
 	lcd.fillScreen(RGB(120, 120, 120));
@@ -53,7 +52,8 @@ void LevelMenu::levelsetup(MI0283QT9 lcd, ArduinoNunchuk nunchuk)
 
 void LevelMenu::levelloop(MI0283QT9 lcd, ArduinoNunchuk nunchuk)
 {
-	
+	lcd.drawText(tekstdraaigetal, 230, "Druk de zButton in om te selecteren", RGB(0, 0, 0), RGB(120, 120, 120), 1);
+	tekstdraaigetal--;
 	nunchuk.update();
 	while (nunchuk.analogY < naarOnderGrensNunchuck || nunchuk.analogY > naarBovenGrensNunchuck) {
 		//nunchuck naar onder
@@ -147,12 +147,10 @@ void LevelMenu::levelloop(MI0283QT9 lcd, ArduinoNunchuk nunchuk)
 			this->speelveld.constructorAlternatief(2, 2, 14, 10);
 			this->speelveld.SetupSpeelveld(lcd, nunchuk, randomMap,18);
 			//start random map
-
 		default:
 			break;
 		}
 	}
-
 }
 
 

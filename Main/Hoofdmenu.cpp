@@ -12,13 +12,9 @@ hoofdmenuu::hoofdmenuu()
 }
 
 void hoofdmenuu::buttonstart(int ingedrukt)
-{
-	//draw the start button	
-		lcd.drawRect(57, 102, 206, 56, RGB(120, 120, 120));
-		lcd.fillRect(60, 105, 200, 50, RGB(178, 34, 34));
-		lcd.drawRect(60, 105, 200, 50, RGB(0, 0, 0));
-		lcd.drawText(83, 115, "Start", RGB(0, 0, 0), RGB(178, 34, 34), 4.5);	
-	if (ingedrukt == 1) {
+{		
+	lcd.drawRect(57, 102, 206, 56, RGB(120, 120, 120));
+	if (ingedrukt == 1) {		
 		lcd.drawRect(57, 102, 206, 56, RGB(0, 0, 0));
 	}
 	nunchuk.update();
@@ -26,13 +22,8 @@ void hoofdmenuu::buttonstart(int ingedrukt)
 
 void hoofdmenuu::buttonscores(int ingedrukt2)
 {
-		//draw the highscores button
-		lcd.drawRect(57, 162, 206, 56, RGB(120, 120, 120));
-		lcd.fillRect(60, 165, 200, 50, RGB(178, 34, 34));
-		lcd.drawRect(60, 165, 200, 50, RGB(0, 0, 0));
-		lcd.drawText(83, 183, "Highscores", RGB(0, 0, 0), RGB(178, 34, 34), 2);
-	
-	if (ingedrukt2 == 1) {
+	lcd.drawRect(57, 162, 206, 56, RGB(120, 120, 120));
+	if (ingedrukt2 == 1) {		
 		lcd.drawRect(57, 162, 206, 56, RGB(0, 0, 0));
 	}
 	nunchuk.update();
@@ -114,12 +105,25 @@ void hoofdmenuu::hoofdmenusetup()
 	//make the screen grey
 	lcd.fillScreen(RGB(120, 120, 120));
 	//draw the bombermanname
-	lcd.drawText(20, 40, "Bomberman", RGB(0, 0, 0), RGB(120, 120, 120), 4);
-	
+	lcd.drawText(20, 40, "Bomberman", RGB(0, 0, 0), RGB(120, 120, 120), 4);	
 	nunchuk.init();
+	drawbuttons(lcd);
 	welkebutton();
 }
 
+void hoofdmenuu::drawbuttons(MI0283QT9 lcd)
+{
+	//draw the start button	
+	lcd.drawRect(57, 102, 206, 56, RGB(120, 120, 120));
+	lcd.fillRect(60, 105, 200, 50, RGB(178, 34, 34));
+	lcd.drawRect(60, 105, 200, 50, RGB(0, 0, 0));
+	lcd.drawText(83, 115, "Start", RGB(0, 0, 0), RGB(178, 34, 34), 4.5);
+	//draw the highscores button
+	lcd.drawRect(57, 162, 206, 56, RGB(120, 120, 120));
+	lcd.fillRect(60, 165, 200, 50, RGB(178, 34, 34));
+	lcd.drawRect(60, 165, 200, 50, RGB(0, 0, 0));
+	lcd.drawText(83, 183, "Highscores", RGB(0, 0, 0), RGB(178, 34, 34), 2);
+}
 void hoofdmenuu::setPageState(PageState Currentpage)
 {
 	this->pageState = Currentpage;

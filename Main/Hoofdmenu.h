@@ -22,6 +22,7 @@ public:
 	void hoofdmenuloop();
 	void hoofdmenusetup();
 	ArduinoNunchuk nunchuk = ArduinoNunchuk();
+	void drawbuttons(MI0283QT9 lcd);
 	void setPageState(PageState Currentpage);
 	PageState pageState;
 	LevelMenu levelmenu;

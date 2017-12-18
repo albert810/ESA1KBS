@@ -55,9 +55,8 @@ void Speelveld::SetupSpeelveld(MI0283QT9 lcd, ArduinoNunchuk nunchuck, uint8_t l
 	this->setLCD(lcd);
 	this->setNunchuck(nunchuck);
 	drawBegin(level, locatienummer);
-	//if(this->spelersZijnIngesteld)
-
-
+	this->levensTekenen(1);
+	this->levensTekenen(2);
 
 }
 
@@ -243,6 +242,66 @@ void Speelveld::tekenVerplaatsingPoppetje()
 
 	speler1.drawPoppetje(speler1.currentlocatie.XLocation, speler1.currentlocatie.YLocation);//huidige poppetje tekenen
 	speler2.drawPoppetje(speler2.currentlocatie.XLocation, speler2.currentlocatie.YLocation);
+}
+
+void Speelveld::levensTekenen(uint8_t speler)
+{
+	int x = 230;
+	int x1 = 250;
+	int x2 = 270;
+
+	
+
+
+	int xcircle = (15 * 20) - 32;
+	int ycircle = (12* 20) - 12;
+
+	switch (speler)
+	{
+	case 1:
+		
+		this->lcdGame.fillTriangle(x + 30-160, x, x + 40-160, x, x + 35-160, x + 10, RGB(255, 3, 3));
+		this->lcdGame.fillTriangle(x1 + 30-160, x, x1 + 40-160, x, x1 + 35-160, x + 10, RGB(255, 3, 3));
+		this->lcdGame.fillTriangle(x2 + 30-160, x, x2 + 40-160, x, x2 + 35-160, x + 10, RGB(255, 3, 3));
+		
+		for (size_t i = 0; i < 3; i++)
+		{
+			this->lcdGame.fillCircle(xcircle + (20 * i)-160, ycircle, 3, RGB(255, 3, 3));
+			this->lcdGame.fillCircle(xcircle + (20 * i) - 160 - 6, ycircle, 3, RGB(255, 3, 3));
+		}
+
+		break;
+	case 2:
+		this->lcdGame.fillTriangle(x + 30, x, x + 40, x, x + 35, x + 10, RGB(255, 3, 3));
+		this->lcdGame.fillTriangle(x1 + 30, x, x1 + 40, x, x1 + 35, x + 10, RGB(255, 3, 3));
+		this->lcdGame.fillTriangle(x2 + 30, x, x2 + 40, x, x2 + 35, x + 10, RGB(255, 3, 3));
+
+		for (size_t i = 0; i < 3; i++)
+		{
+			this->lcdGame.fillCircle(xcircle + (20 * i), ycircle, 3, RGB(255, 3, 3));
+			this->lcdGame.fillCircle(xcircle + (20 * i) - 6, ycircle, 3, RGB(255, 3, 3));
+
+		}
+		break;
+	default:
+		break;
+	}
+	uint8_t beschadegingSpeler1= 3 - this->speler1.levens;
+	uint8_t beschadegingSpeler2 = 3 - this->speler2.levens;
+	
+
+
+	for (size_t i = 0; i < beschadegingSpeler1; i++)
+	{
+		this->lcdGame.fillRect((6 * 20) - 22 +(i*20), (12 * 20) - 20, 18, 23, 1);
+
+	}
+	for (size_t i = 0; i < beschadegingSpeler2; i++)
+	{
+		this->lcdGame.fillRect((6 * 20) - 22 + (i * 20)+160, (12 * 20) - 20, 18, 23, 1);
+	}
+
+
 }
 
 void Speelveld::maakOnbegaanbareMuren()
@@ -474,19 +533,17 @@ void Speelveld::ontploffingBomVanLijn(char as, uint8_t xLocatie, uint8_t yLocati
 	{
 		if (this->speler1.currentlocatie.XLocation == this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation && this->speler1.currentlocatie.YLocation== this->locationsOfMap[locatieIndex + locatieCounter * i].YLocation)
 		{
-			Serial.println("speler locatie:");
-			Serial.print(this->speler1.currentlocatie.XLocation);
-			Serial.print("map locatie:");
-			Serial.println(this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation);
-			Serial.println("ik be dood");
+			this->speler1.levens--;
+			Serial.println(this->speler1.levens);
+			this->levensTekenen(1);
+
 		}
 		if (this->speler2.currentlocatie.XLocation == this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation && this->speler2.currentlocatie.YLocation == this->locationsOfMap[locatieIndex + locatieCounter * i].YLocation)
 		{
-			Serial.println("speler locatie:");
-			Serial.print(this->speler2.currentlocatie.XLocation);
-			Serial.print("map locatie:");
-			Serial.println(this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation);
-			Serial.println("ik be dood 2");
+			this->speler2.levens--;
+			Serial.println(this->speler2.levens);
+			this->levensTekenen(2);
+
 		}
 
 		if (as ==xAsLinks || as == xAsRechts)

@@ -39,6 +39,7 @@ enum nunchuckDirections
 //===================spelers+poppetje==================
 void			verplaatsPoppetje();
 void			tekenVerplaatsingPoppetje();
+void			levensTekenen(uint8_t speler);
 Poppetje		speler1;
 Poppetje		speler2;
 boolean			spelersZijnIngesteld;

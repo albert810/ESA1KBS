@@ -21,7 +21,7 @@ public:
 	void drawPoppetje(int locationX, int locationY);
 	MI0283QT9 lcd;
 	Bom bom[3];
-
+	uint8_t levens = 3;
 
 private:
 protected:

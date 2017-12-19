@@ -1,7 +1,7 @@
 // hoofdmenu.h
 #include <ArduinoNunchuk.h>
 #include <MI0283QT9.h>
-
+#include "LevelMenu.h"
 
 #ifndef _HOOFDMENUU_h
 #define _HOOFDMENUU_h
@@ -11,7 +11,7 @@
 #else
 #include "WProgram.h"
 #endif
-#include "speelveld.h"
+
 class hoofdmenuu {
 
 public:
@@ -21,14 +21,23 @@ public:
 	void welkebutton();
 	void hoofdmenuloop();
 	void hoofdmenusetup();
-	Speelveld speelveld = Speelveld();
 	ArduinoNunchuk nunchuk = ArduinoNunchuk();
+	void drawbuttons(MI0283QT9 lcd);
 	void setPageState(PageState Currentpage);
 	PageState pageState;
-protected:
+	LevelMenu levelmenu;
+	int tekstdraaigetal = 150;
+	uint16_t potwaarde = 100;	
+	MI0283QT9 lcd; //I2C (GLCD-Shield or MI0283QT Adapter v2
 private:
 	int buttoncount = 1;
-	MI0283QT9 lcd; //I2C (GLCD-Shield or MI0283QT Adapter v2
+	
+	enum nunchuckDirection
+	{
+		naarBovenGrens=137,
+		naarOnderGrens=125
+	};
+
 };
 
 

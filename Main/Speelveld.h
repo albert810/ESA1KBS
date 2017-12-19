@@ -12,6 +12,7 @@
 #include <MI0283QT9.h>
 #include "Locatie.h"
 #include "Poppetje.h"
+
 class Speelveld {
 public:
 	
@@ -22,15 +23,23 @@ public:
 void			constructorAlternatief(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y);
 void			setLCD(MI0283QT9 lcd);
 void			setNunchuck(ArduinoNunchuk nunchuck);
-void			SetupSpeelveld(MI0283QT9 lcd, ArduinoNunchuk nunchuck);
-void			drawBegin();
+void			SetupSpeelveld(MI0283QT9 lcd, ArduinoNunchuk nunchuck, uint8_t level, int locatienummer);
+void			drawBegin(uint8_t level, int locatieNummer);
 
 ArduinoNunchuk	nunchuk;
+enum nunchuckDirections
+{
+	grensNaarBovenNunchuck = 155,
+	grensNaarOnderNunchuck = 100,
 
+	grensNaarRechtsNunchuck = 155,
+	grensNaarLinksNunchuck = 100
+};
 
 //===================spelers+poppetje==================
 void			verplaatsPoppetje();
 void			tekenVerplaatsingPoppetje();
+void			levensTekenen(uint8_t speler);
 Poppetje		speler1;
 Poppetje		speler2;
 boolean			spelersZijnIngesteld;
@@ -43,9 +52,11 @@ void	DropBomb(int speler);
 //===================locatie====================
 int				locatieNummer=0;
 MI0283QT9		lcdGame;
-Location		locationsOfMap[192];
+Location		locationsOfMap[175];
 void			maakRandomMapEenMap();
-void			maakVerwoestbareMuur(uint8_t xLocatie, uint8_t yLocatie);
+void			maakVerwoestbareMuur(int  xLocatie, int yLocatie);
+void			maakLevel(uint8_t level);
+int				vanXenYNaarLocatieNummer(int x, int y);
 /*
 Een enum voor het helpen opslaan van de vorige locatie. Word gebruikt in de methode verplaatspoppetje en tekenverplaatsingpoppetje
 */
@@ -61,13 +72,25 @@ enum locatiesVoorScherm
 //===================bom=====================
 int			bomID;
 void		ontploffingBom(uint8_t xLocatie, uint8_t yLocatie);
+void		ontploffingBomVanLijn(char as, uint8_t xLocatie, uint8_t yLocatie);
 uint16_t	explosieGrootte;
 uint8_t		rangeBomb = 12;
-int			vorigeLocatie;
+int			vorigelocatieSpeler1;
+int			vorigelocatieSpeler2=5;
 void		tekenBom(uint8_t xLocatie, uint8_t yLocatie);
 void		tekenOntploffing(uint8_t xLocatie, uint8_t yLocatie);
 void		bomOpruimen(uint8_t xLocatie, uint8_t yLocatie);
 void		tekenOpruiming(uint8_t xLocatie, uint8_t yLocatie);
+
+//om aan te geven welke as de bom van de lijn is. Wordt gebruikt van welke kant van de X as
+//Het is gebasseerd op "WASD" voor het geval je je afvraagt waarom deze waardes.
+enum bomLijnAs
+{
+	xAsRechts = 'd',
+	xAsLinks = 'a',
+	yAsBoven = 'w',
+	yAsOnder = 's'
+};
 protected:
 private:
 

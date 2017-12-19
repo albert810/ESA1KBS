@@ -15,10 +15,11 @@ public:
 	PageState();
 	boolean hoofdmenu;
 	boolean game;
+	boolean levelmenu;
 
 	void setHoofdMenu(boolean state);
 	void setGame(boolean state);
-
+	void setLevelmenu(boolean state);
 };
 
 

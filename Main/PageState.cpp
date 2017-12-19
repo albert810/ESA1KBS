@@ -18,3 +18,8 @@ void PageState::setGame(boolean state)
 {
 	this->game = state;
 }
+
+void PageState::setLevelmenu(boolean state)
+{
+	this->levelmenu = state;
+}

@@ -7,6 +7,8 @@
 #include "Speelveld.h"
 #include "Locatie.h"
 
+
+
 Speelveld::Speelveld(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y)
 {
 	//achtergrond groen maken
@@ -250,9 +252,6 @@ void Speelveld::levensTekenen(uint8_t speler)
 	int x1 = 250;
 	int x2 = 270;
 
-	
-
-
 	int xcircle = (15 * 20) - 32;
 	int ycircle = (12* 20) - 12;
 
@@ -289,8 +288,6 @@ void Speelveld::levensTekenen(uint8_t speler)
 	uint8_t beschadegingSpeler1= 3 - this->speler1.levens;
 	uint8_t beschadegingSpeler2 = 3 - this->speler2.levens;
 	
-
-
 	for (size_t i = 0; i < beschadegingSpeler1; i++)
 	{
 		this->lcdGame.fillRect((6 * 20) - 22 +(i*20), (12 * 20) - 20, 18, 23, 1);
@@ -381,8 +378,9 @@ void Speelveld::DropBomb(int speler)
 				this->bomOpruimen(this->speler1.bom[bomID].locatieBom.XLocation, this->speler1.bom[bomID].locatieBom.YLocation);
 				this->speler1.bom[bomID].schadeOpruimen = 0;
 				this->speler1.bom[bomID].opruimenBomTijd = 0;
-				
 				this->bomID--;
+
+
 			}
 
 
@@ -493,7 +491,8 @@ void Speelveld::ontploffingBom(uint8_t xLocatie, uint8_t yLocatie)
 	ontploffingBomVanLijn(xAsLinks, xLocatie, yLocatie);
 	ontploffingBomVanLijn(xAsRechts, xLocatie, yLocatie);
 	ontploffingBomVanLijn(yAsBoven, xLocatie, yLocatie);
-	ontploffingBomVanLijn(yAsOnder, xLocatie, yLocatie);	
+	ontploffingBomVanLijn(yAsOnder, xLocatie, yLocatie);
+	
 }
 
 void Speelveld::ontploffingBomVanLijn(char as, uint8_t xLocatie, uint8_t yLocatie)
@@ -536,13 +535,14 @@ void Speelveld::ontploffingBomVanLijn(char as, uint8_t xLocatie, uint8_t yLocati
 			this->speler1.levens--;
 			Serial.println(this->speler1.levens);
 			this->levensTekenen(1);
-
+		
 		}
 		if (this->speler2.currentlocatie.XLocation == this->locationsOfMap[locatieIndex + locatieCounter * i].XLocation && this->speler2.currentlocatie.YLocation == this->locationsOfMap[locatieIndex + locatieCounter * i].YLocation)
 		{
 			this->speler2.levens--;
 			Serial.println(this->speler2.levens);
 			this->levensTekenen(2);
+		
 
 		}
 

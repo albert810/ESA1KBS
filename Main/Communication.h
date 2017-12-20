@@ -12,10 +12,8 @@ public:
 	int* prepareDataCommands(int object);
 	void sendSingleData(int object);
 	void testPulses();
-	void initInterrupt();
 	void initReceiver();
 	void readPulses();
-	void readPulses2();
 	void convertByte();
 	void printPulses();
 	void testVoorAlbert();

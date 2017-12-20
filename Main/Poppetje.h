@@ -17,10 +17,12 @@ public:
 	void		tekenOntploffing(int xLocatie, int yLocatie);
 	Poppetje();
 	//void setLCD(MI0283QT9 lcd );
-	Location currentlocatie;
+	
+	uint8_t	xLocatie;
+	uint8_t yLocatie;
 	void drawPoppetje(int locationX, int locationY);
 	MI0283QT9 lcd;
-	Bom bom[3];
+	Bom bom;
 	uint8_t levens = 3;
 
 private:

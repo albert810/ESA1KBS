@@ -18,7 +18,7 @@ Author:	Albert
 
 
 PageState pagestate;
-Communication c;
+//Communication c;
 hoofdmenuu h;
 int counter = 0;
 

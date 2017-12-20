@@ -10,10 +10,7 @@ Bom::Bom()
 
 
 
-void Bom::setLocatieBom(Location locatie)
-{
-	this->locatieBom = locatie;
-}
+
 
 
 

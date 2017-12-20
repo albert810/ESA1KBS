@@ -13,8 +13,8 @@ class Bom {
 
 public:
 	Bom();
-	Location locatieBom;
-	void setLocatieBom(Location locatie);
+	uint8_t xLocatie;
+	uint8_t yLocatie;
 	void tekenBom();
 
 	//bepaalde statussen van de bom

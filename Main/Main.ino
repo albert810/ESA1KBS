@@ -47,6 +47,19 @@ main() {
 
 		}
 
+		if (h.levelmenu.speelveld.backToMainMenu)
+		{
+			h.levelmenu.speelveld.backToMainMenoLoop();
+			if (h.levelmenu.speelveld.enableMainMenu)
+			{
+				h.levelmenu.speelveld.resetValuesOfTheGame();
+				h.levelmenu.speelveld.enableMainMenu = 0;
+				h.levelmenu.speelveld.backToMainMenu = 0;
+				h.hoofdmenusetup();
+				h.pageState.hoofdmenu = 1;
+			
+			}
+		}
 	}
 }
 

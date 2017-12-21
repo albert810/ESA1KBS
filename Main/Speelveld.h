@@ -12,7 +12,6 @@
 #include <MI0283QT9.h>
 #include "Locatie.h"
 #include "Poppetje.h"
-
 class Speelveld {
 public:
 	
@@ -25,8 +24,20 @@ void			setLCD(MI0283QT9 lcd);
 void			setNunchuck(ArduinoNunchuk nunchuck);
 void			SetupSpeelveld(MI0283QT9 lcd, ArduinoNunchuk nunchuck, uint8_t level, int locatienummer);
 void			drawBegin(uint8_t level, int locatieNummer);
-
+void			backToMainMenoLoop();
+boolean			backToMainMenu;
+boolean			enableMainMenu;
+void			resetValuesOfTheGame();
 ArduinoNunchuk	nunchuk;
+uint8_t			level;
+enum levels
+{
+	level1 = 1,
+	level2 = 2,
+	level3 = 3,
+	randomMap = 4
+};
+
 enum nunchuckDirections
 {
 	grensNaarBovenNunchuck = 155,
@@ -56,7 +67,9 @@ Location		locationsOfMap[175];
 void			maakRandomMapEenMap();
 void			maakVerwoestbareMuur(int  xLocatie, int yLocatie);
 void			maakLevel(uint8_t level);
+void			vernietigLocatie(int  xLocatie, int yLocatie);
 int				vanXenYNaarLocatieNummer(int x, int y);
+
 /*
 Een enum voor het helpen opslaan van de vorige locatie. Word gebruikt in de methode verplaatspoppetje en tekenverplaatsingpoppetje
 */

@@ -16,6 +16,7 @@ public:
 	boolean hoofdmenu;
 	boolean game;
 	boolean levelmenu;
+	boolean currentStatus;
 
 	void setHoofdMenu(boolean state);
 	void setGame(boolean state);

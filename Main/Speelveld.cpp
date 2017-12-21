@@ -4,6 +4,7 @@
 // 
 
 
+
 Speelveld::Speelveld(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y)
 {
 	//achtergrond groen maken
@@ -24,6 +25,82 @@ Speelveld::Speelveld(int startPositionForPlayer1X, int startPositionForPlayer1Y,
 
 Speelveld::Speelveld()
 {
+}
+
+void Speelveld::backToMainMenoLoop()
+{
+	this->nunchuk.update();
+
+	if (nunchuk.cButton) {
+		this->backToMainMenu = 0;
+		free(locationsOfMap);
+		this->enableMainMenu = 1;
+		//this->nunchuk.update();
+	}
+}
+
+void Speelveld::resetValuesOfTheGame()
+{
+	this->speler1.levens = 3;
+	this->speler2.levens = 3;
+	this->vorigelocatieSpeler1 = 0;
+	this->vorigelocatieSpeler2 = 5;
+
+	//het resetten van de onbegaanbare locaties van de levels
+	switch (this->level)
+	{
+	case level1:
+		for (size_t i = 0; i < 9; i++)
+		{
+			vernietigLocatie(4, 2 + i);//alle locatie vernietigen die aangemaakt zijn van de y as 
+			vernietigLocatie(6, 2 + i);
+			vernietigLocatie(8, 2 + i);
+			vernietigLocatie(10, 2 + i);
+			vernietigLocatie(12, 2 + i);
+
+		}
+
+		for (size_t i = 0; i < 13; i++)
+		{
+			vernietigLocatie(2 + i, 4);//alle locaties vernietigen die aangemaakt zijn van de x as
+			vernietigLocatie(2 + i, 6);
+			vernietigLocatie(2 + i, 8);
+		}
+		break;
+	case level2:
+		vernietigLocatie(8, 6);
+		//binnenkant
+		for (uint8_t i = 0; i < 9; i++)
+		{
+			vernietigLocatie(4 + i, 4);
+			vernietigLocatie(4 + i, 8);
+
+		}
+		for (uint8_t i = 0; i < 3; i++)
+		{
+			vernietigLocatie(4, 5 + i);
+			vernietigLocatie(12, 5 + i);
+
+		}
+		//buitenkant 
+		//horizontaal
+		for (uint8_t i = 0; i < 13; i++)
+		{
+			vernietigLocatie(2 + i, 2);
+			vernietigLocatie(2 + i, 10);
+		}
+
+		//verticaal
+		for (uint8_t i = 0; i < 8; i++)
+		{
+			vernietigLocatie(2, 3 + i);
+			vernietigLocatie(14, 2 + i);
+
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void Speelveld::constructorAlternatief(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y)
@@ -57,6 +134,13 @@ void Speelveld::setNunchuck(ArduinoNunchuk nunchuk)
 
 void Speelveld::SetupSpeelveld(MI0283QT9 lcd, ArduinoNunchuk nunchuck, uint8_t level, int locatienummer)
 {
+	//je Z button was nog ingedrukt van de hoofdmenu en de nunchuck moet even weer stabiel worden vandaar wordt
+	//de nunchuck een aantal keer geupdate
+	for (size_t i = 0; i < 10; i++)
+	{
+		this->nunchuk.update();
+	}
+	this->level = level;
 	this->setLCD(lcd);
 	this->setNunchuck(nunchuck);
 	drawBegin(level, locatienummer);
@@ -230,6 +314,7 @@ void Speelveld::tekenVerplaatsingPoppetje()
 
 	speler1.drawPoppetje(speler1.xLocatie, speler1.yLocatie);
 	speler2.drawPoppetje(speler2.xLocatie, speler2.yLocatie);
+
 }
 
 void Speelveld::levensTekenen(uint8_t speler)
@@ -312,14 +397,10 @@ void Speelveld::maakOnbegaanbareMuren()
 void Speelveld::DropBomb(int speler)
 {
 	if (speler == 1) {
-
 		this->speler1.bom.cooldownBom++;
-
 		if ((this->nunchuk.zButton && this->speler1.bom.cooldownBom > 10)) {
 			this->speler1.bom.cooldownBom = 0;
 			this->bomID++;//1+
-
-
 			this->speler1.bom.xLocatie = this->speler1.xLocatie;
 			this->speler1.bom.yLocatie = this->speler1.yLocatie;
 			this->speler1.bom.bomStatus = 1;
@@ -370,7 +451,22 @@ void Speelveld::DropBomb(int speler)
 				this->speler1.bom.opruimenBomTijd = 0;
 				this->bomID--;
 
-
+				if (this->speler2.levens == 0) {
+					this->spelersZijnIngesteld = false;
+					this->lcdGame.fillScreen(RGB(255, 255, 255));
+					lcdGame.drawText(20, 40, "You Win!", RGB(0, 0, 0), RGB(120, 120, 120), 4);
+					this->backToMainMenu = 1;
+					free(this->locationsOfMap);
+					this->nunchuk.update();
+				}
+				else if (this->speler1.levens == 0) {
+					this->spelersZijnIngesteld = false;
+					this->lcdGame.fillScreen(RGB(255, 255, 255));
+					lcdGame.drawText(20, 40, "You Lose!", RGB(0, 0, 0), RGB(120, 120, 120), 4);
+					this->backToMainMenu = 1;
+					free(this->locationsOfMap);
+					this->nunchuk.update();
+				}
 			}
 
 
@@ -406,7 +502,7 @@ void Speelveld::maakLevel(uint8_t level)
 {
 	switch (level)
 	{
-	case 1: 
+	case level1: 
 		for (size_t i = 0; i < 9; i++)
 		{
 			maakVerwoestbareMuur(4, 2 + i);
@@ -427,7 +523,7 @@ void Speelveld::maakLevel(uint8_t level)
 	
 
 		break;
-	case 2: 
+	case level2: 
 		maakVerwoestbareMuur(8,6);
 		//binnenkant
 		for (uint8_t i = 0; i < 9; i++)
@@ -459,7 +555,7 @@ void Speelveld::maakLevel(uint8_t level)
 		}
 
 		break;
-	case 3:
+	case level3:
 		break;
 	case 4:
 		break;
@@ -468,6 +564,15 @@ void Speelveld::maakLevel(uint8_t level)
 	}
 
 
+}
+
+void Speelveld::vernietigLocatie(int xLocatie, int yLocatie)
+{
+	
+	int locatieMap = ((yLocatie - 1) * 16) + xLocatie;
+
+	//instellen in map dat er een muur is
+	this->locationsOfMap[locatieMap].nietBegaanBareLocatie = 0;
 }
 
 int Speelveld::vanXenYNaarLocatieNummer(int x, int y)
@@ -482,6 +587,7 @@ void Speelveld::ontploffingBom(uint8_t xLocatie, uint8_t yLocatie)
 	ontploffingBomVanLijn(xAsRechts, xLocatie, yLocatie);
 	ontploffingBomVanLijn(yAsBoven, xLocatie, yLocatie);
 	ontploffingBomVanLijn(yAsOnder, xLocatie, yLocatie);
+	
 	
 }
 

@@ -3,11 +3,6 @@
 // 
 // 
 
- 
-#include "Speelveld.h"
-#include "Locatie.h"
-
-
 
 Speelveld::Speelveld(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y)
 {

@@ -29,6 +29,7 @@ public:
 	int tekstdraaigetal = 150;
 	uint16_t potwaarde = 100;	
 	MI0283QT9 lcd; //I2C (GLCD-Shield or MI0283QT Adapter v2
+
 private:
 	int buttoncount = 1;
 	

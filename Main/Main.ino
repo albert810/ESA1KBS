@@ -18,21 +18,30 @@ Author:	Albert
 
 
 PageState pagestate;
-//Communication c;
+Communication c;
 hoofdmenuu h;
+
 int counter = 0;
+int pos = 0;
 
 
 main() {
 	init();
 	Serial.begin(9600);
-	//c.enableTimer1();
-
+    PORTD |= (1 << PORTD3);
+	//c.sendSingleData(5);
+	c.initInterrupt();
 	h.setPageState(pagestate);
 	h.hoofdmenusetup();
+	
+
 
 	while (1)
 	{
+		//Serial.println("ht");
+
+		
+		
 		if (h.pageState.hoofdmenu)
 			h.hoofdmenuloop();
 
@@ -46,7 +55,6 @@ main() {
 			h.levelmenu.speelveld.DropBomb(1);//checkt steeds of de bom is ingedrukt voor speler 1 vandaar die 1
 
 		}
-
 		if (h.levelmenu.speelveld.backToMainMenu)
 		{
 			h.levelmenu.speelveld.backToMainMenoLoop();
@@ -57,7 +65,7 @@ main() {
 				h.levelmenu.speelveld.backToMainMenu = 0;
 				h.hoofdmenusetup();
 				h.pageState.hoofdmenu = 1;
-			
+
 			}
 		}
 	}
@@ -68,13 +76,15 @@ main() {
 
 //timer die reageert op hardware
 //hier moet nog een klasse etc van gemaakt worden
-ISR(TIMER1_COMPA_vect)
-{
-	//bom 
+
+
+ISR(INT1_vect) {
+    Serial.println("");
+	c.readPulses2();
+	pos = c.convertByte();
 	
-
-
-
+	if (pos == 1) {
+		Serial.println("doe iets");
+	}
 
 }
-

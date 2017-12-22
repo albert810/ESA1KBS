@@ -16,7 +16,7 @@ public:
 	void initReceiver();
 	void readPulses();
 	void readPulses2();
-	void convertByte();
+	int convertByte();
 	void printPulses();
 	void testVoorAlbert();
 	enum bitIdentity {

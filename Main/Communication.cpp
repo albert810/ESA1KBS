@@ -9,9 +9,7 @@
 #include <stdint.h>
 
 #define IRONTVANGPIN      PIND
-
 #define IRPINNUM          3
-
 #define MAXONTV 600
 #define STARTBIT 400
 #define STOPBIT 400
@@ -37,13 +35,13 @@ void Communication::pulseIR(long microsecs)
 	while (microsecs > 0) {
 		// 38 kHz = 13 microseconds high en 13 microseconds low
 		PORTD |= (1 << PORTD5);       // high ~1ms
-		delayMicroseconds(8);         // 12ms
+		delayMicroseconds(12);         // 12ms
 		PORTD &= ~(1 << PORTD5);           // low ~1ms
-		delayMicroseconds(8);         // 12ms
+		delayMicroseconds(12);         // 12ms
 
 
 									   // samen 26 microseconds
-		microsecs -= 18;
+		microsecs -= 26;
 	}
 
 	sei();  // this turns them back on
@@ -86,7 +84,7 @@ int* Communication::prepareDataCommands(int object)
 	//maak lege lijst en zorg er voor dat (voor het bericht) de bit op  0 staat dus op false
 
 
-	int *list = new int; // (int*)malloc(8 * sizeof(list));
+	int * list = new int;
 	list[4];
 	for (int i = 0; i <= 4; i++) {
 		list[i] = bitIsFalse;
@@ -98,7 +96,6 @@ int* Communication::prepareDataCommands(int object)
 		}
 
 	}
-	//free(list);
     return list;
 
 }
@@ -182,7 +179,7 @@ void Communication::readPulses2() {
 			
 			free(pulseList);
 			//Serial.println("s");
-			convertByte();
+			//convertByte();
 			currentpulse = 0;
 		}
 	}
@@ -198,7 +195,7 @@ void Communication::readPulses2() {
 	else {
 		
 		pulseList[currentpulse] = pulse2;
-		Serial.println(pulse2);
+		//Serial.println(pulse2);
 		
 		currentpulse++;
 	}
@@ -260,7 +257,7 @@ void Communication::readPulses() {
 
 
 
-void Communication::convertByte() {
+int Communication::convertByte() {
 	uint16_t factor, byteValue;
 	factor = 1; // byte komt achterstevoren binnen dus lezen begint bij de LSB
 	byteValue = 0; //tellen begint bij 0
@@ -279,7 +276,7 @@ void Communication::convertByte() {
 
 	}
 	Serial.print(byteValue);
-
+	return byteValue;
 
 }
 //printfuncties voor de ontvangen byte's

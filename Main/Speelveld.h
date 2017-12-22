@@ -12,9 +12,11 @@
 #include <MI0283QT9.h>
 #include "Locatie.h"
 #include "Poppetje.h"
+#include "Communication.h"
 class Speelveld {
 public:
 	
+	Communication   c;
 
 //===================instellen programma===============
 				Speelveld(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y);

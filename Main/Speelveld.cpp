@@ -5,6 +5,8 @@
 
 
 
+
+
 Speelveld::Speelveld(int startPositionForPlayer1X, int startPositionForPlayer1Y, int startPositionForPlayer2X, int startPositionForPlayer2Y)
 {
 	//achtergrond groen maken
@@ -230,6 +232,7 @@ void Speelveld::verplaatsPoppetje()
 		if (this->locationsOfMap[locatieNummer -16].nietBegaanBareLocatie ) {
 		}
 		else{
+			c.sendSingleData(1);
 			this->locatieNummer = locatieNummer - 16;
 			this->speler1.yLocatie--;
 			this->vorigelocatieSpeler1 = omhoog;
@@ -242,6 +245,7 @@ void Speelveld::verplaatsPoppetje()
 		if (this->locationsOfMap[locatieNummer + 16].nietBegaanBareLocatie) {
 		}
 		else{
+			c.sendSingleData(2);
 		this->locatieNummer = locatieNummer + 16;
 
 		this->speler1.yLocatie++;
@@ -255,6 +259,7 @@ void Speelveld::verplaatsPoppetje()
 		if(this->locationsOfMap[locatieNummer + 1].nietBegaanBareLocatie){
 		}
 		else {
+			c.sendSingleData(3);
 			this->speler1.xLocatie++;
 			this->vorigelocatieSpeler1 = rechts;
 			this->locatieNummer = locatieNummer + 1;
@@ -267,6 +272,7 @@ void Speelveld::verplaatsPoppetje()
 		if (this->locationsOfMap[locatieNummer - 1].nietBegaanBareLocatie) {
 		}
 		else{
+			c.sendSingleData(4);
 		this->speler1.xLocatie--;
 		this->vorigelocatieSpeler1 = links;
 		this->locatieNummer = locatieNummer - 1;
@@ -311,6 +317,8 @@ void Speelveld::tekenVerplaatsingPoppetje()
 	}
 		this->lcdGame.fillRect(x, y, 20, 20, RGB(0, 53, 0));//vorige locatie wegtekenen
 		this->lcdGame.fillRect(x2, y2, 20, 20, RGB(0, 53, 0));//vorige locatie wegtekenen
+
+		
 
 	speler1.drawPoppetje(speler1.xLocatie, speler1.yLocatie);
 	speler2.drawPoppetje(speler2.xLocatie, speler2.yLocatie);
@@ -781,12 +789,10 @@ void Speelveld::tekenOpruiming(uint8_t xLocatie, uint8_t yLocatie)
 {
 	int x;
 	int y;
-
+	
 	x = (xLocatie * 20) - 20;
 	y = (yLocatie * 20) - 20;
 
 	this->lcdGame.drawRect(x, y, 20, 20, RGB(0, 53, 0));
 	this->lcdGame.fillRect(x, y, 20, 20, RGB(0, 53, 0));
 }
-
-

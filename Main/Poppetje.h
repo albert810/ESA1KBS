@@ -14,17 +14,15 @@
 class Poppetje {
 	
 public:
-	void		tekenOntploffing(int xLocatie, int yLocatie);
 	Poppetje();
-	//void setLCD(MI0283QT9 lcd );
-	
+	void tekenOntploffing(int xLocatie, int yLocatie);//teken de ontploffing op de plaats waar de poppetje zelf staat
+	void drawPoppetje(int locationX, int locationY);//het poppetje tekenen om de speelveld
 	uint8_t	xLocatie;
 	uint8_t yLocatie;
-	void drawPoppetje(int locationX, int locationY);
-	MI0283QT9 lcd;
 	Bom bom;
 	uint8_t levens = 3;
-
+	uint8_t	snelheidsGrens; //wordt telkens verhoogt in de main loop, wanneer hij een bepaalde waarde heeft mag de poppetje bewegen
+	MI0283QT9 lcd;
 private:
 protected:
 

@@ -15,11 +15,9 @@ public:
 	Bom();
 	uint8_t xLocatie;
 	uint8_t yLocatie;
-	void tekenBom();
-
 	//bepaalde statussen van de bom
-	boolean schadeOpruimen;
-	boolean bomStatus;
+	boolean schadeOpruimen;;//wanneer de bom opgeruimd moet worden word deze true
+	boolean bomStatus;//wanneer de bom af is gegaan wordt deze true
 	
 	//Het id van de bom,  voor het bijhouden van welke bom er ook af moet gaan
 	int bomID=0;

@@ -13,48 +13,53 @@ Author:	Albert
 #include "Speelveld.h"
 #include "Communication.h"
 #include "Hoofdmenu.h"
-#include "Hoofdmenu.cpp"
 #include <avr\interrupt.h>
 
 
-PageState pagestate;
-Communication c;
-hoofdmenuu h;
+PageState pagestate;//een pagestate voor het aanmaken
+Communication c;//voor het aanzetten van de interrupt
+hoofdmenuu h;//de hoofdmenu aanmaken
 
-int counter = 0;
-int pos = 0;
+uint8_t counter = 0; // deze counter is speciaal voor de interrupt. Deze counter telt het aantal bitjes wat binnenkomt
+uint8_t pos = 0;	//wat het resultaat is van het ontvangen IR signaal
+enum ontvangenIRdata {
 
+	IRomhoog=1,
+	IRomlaag=2,
+	IRrechts=3,
+	IRlinks=4,
+	IRbom=5
+};
 
 main() {
 	init();
 	Serial.begin(9600);
-    PORTD |= (1 << PORTD3);
-	//c.sendSingleData(5);
-	c.initInterrupt();
+    PORTD |= (1 << PORTD3);//aanzetten van pin 3 interupt
+	c.initInterrupt();//aanzetten van interupt
 	h.setPageState(pagestate);
 	h.hoofdmenusetup();
 	
 
 
 	while (1)
-	{
-		//Serial.println("ht");
-
-		
-		
+	{			
+		//in het begin zit het programma in de hoofdmenu
 		if (h.pageState.hoofdmenu)
 			h.hoofdmenuloop();
 
+		//wanneer vanaf het hoofdemenu de levelmenu is geselecteerd gaat het programma over naar het levelmenu
 		if (h.levelmenu.pageState.levelmenu) {
 			h.levelmenu.levelloop(h.lcd, h.nunchuk);
 		}
 
+		//wanneer het de level geselecteerd is begint het spel
 		if (h.levelmenu.speelveld.spelersZijnIngesteld) {
 			h.levelmenu.speelveld.verplaatsPoppetje();
 			h.levelmenu.speelveld.tekenVerplaatsingPoppetje();
-			h.levelmenu.speelveld.DropBomb(1);//checkt steeds of de bom is ingedrukt voor speler 1 vandaar die 1
+			h.levelmenu.speelveld.DropBomb(1);//checkt steeds of de bom is ingedrukt voor speler 1 of speler 2
 
 		}
+		//wanneer het spel afgelopen is gaat het programma naar een status die terug kan naar de menu
 		if (h.levelmenu.speelveld.backToMainMenu)
 		{
 			h.levelmenu.speelveld.backToMainMenoLoop();
@@ -71,20 +76,38 @@ main() {
 	}
 }
 
-//links is rechts -------rechts is links
-
 
 //timer die reageert op hardware
-//hier moet nog een klasse etc van gemaakt worden
-
-
 ISR(INT1_vect) {
     Serial.println("");
 	c.readPulses2();
-	pos = c.convertByte();
-	
-	if (pos == 1) {
-		Serial.println("doe iets");
-	}
+	counter++;
+	//wanneer hij alle vijf bits ontvangen heeft
+	if (counter == 5) {
+		pos = c.convertByte();
+		if (pos == IRomhoog) {
+			h.levelmenu.speelveld.speler2.yLocatie--;
+			h.levelmenu.speelveld.vorigelocatieSpeler2 = h.levelmenu.speelveld.omhoog;//omhoog
 
+		} 
+		else if (pos == IRomlaag) {
+			h.levelmenu.speelveld.speler2.yLocatie++;
+			h.levelmenu.speelveld.vorigelocatieSpeler2 = h.levelmenu.speelveld.omlaag;//omlaag
+
+		}
+		else if (pos == IRrechts) {
+			h.levelmenu.speelveld.speler2.xLocatie++;
+			h.levelmenu.speelveld.vorigelocatieSpeler2 = h.levelmenu.speelveld.rechts;//rechts
+
+		}
+		else if (pos == IRlinks) {
+			h.levelmenu.speelveld.speler2.xLocatie--;
+			h.levelmenu.speelveld.vorigelocatieSpeler2 = h.levelmenu.speelveld.links;//links
+
+		}
+		else if (pos == IRbom) {
+			h.levelmenu.speelveld.bomstatusSpeler2 = 1;
+		}
+		counter = 0;
+	}
 }

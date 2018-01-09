@@ -7,18 +7,18 @@ class Communication
 {
 public:
 	Communication();
+
 	void pulseIR(long microsecs);
 	void enableTimer1();
-	int* prepareDataCommands(int object);
 	void sendSingleData(int object);
 	void testPulses();
 	void initInterrupt();
-	void initReceiver();
 	void readPulses();
 	void readPulses2();
-	int convertByte();
 	void printPulses();
-	void testVoorAlbert();
+
+	int* prepareDataCommands(int object);
+	int convertByte();
 	enum bitIdentity {
 
 		bitIsTrue = 300,
